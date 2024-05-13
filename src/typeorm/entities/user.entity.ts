@@ -34,9 +34,13 @@ export class User {
   @JoinTable({ name: "users_permissions" })
   permissions: Permission[];
 
-  @Column()
+  @Column({
+    default: new Date(),
+  })
   created_at: Date;
 
-  @Column()
+  @Column({
+    default: new Date(),
+  })
   updated_at: Date;
 }
