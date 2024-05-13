@@ -1,12 +1,12 @@
+import { ConfigService } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
-export const TypeOrmRootModuleConfig = TypeOrmModule.forRoot({
-  type: "postgres",
-  host: "localhost",
-  port: 5432,
-  username: "fastfeet",
-  password: "docker",
-  database: "fastfeet",
-  entities: [__dirname + "/**/*.entity{.ts,.js}"],
-  synchronize: true,
+export const TypeOrmRootModuleConfig = TypeOrmModule.forRootAsync({
+  inject: [ConfigService],
+  useFactory: (configService: ConfigService) => ({
+    type: configService.get("DATABASE_TYPE"),
+    url: configService.get("DATABASE_URL"),
+    entities: [__dirname + "/**/*.entity{.ts,.js}"],
+    synchronize: true,
+  }),
 });
