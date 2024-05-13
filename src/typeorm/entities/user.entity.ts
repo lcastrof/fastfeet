@@ -1,4 +1,12 @@
-import { Column, Entity, PrimaryGeneratedColumn, Unique } from "typeorm";
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+  Unique,
+} from "typeorm";
+import { Permission } from "./permisison.entity";
 
 // TODO - Mover entities para pasta de infra quando criada
 @Entity("users")
@@ -19,6 +27,12 @@ export class User {
 
   @Column()
   passwordHashed: string;
+
+  @ManyToMany(() => Permission, {
+    cascade: true,
+  })
+  @JoinTable({ name: "users_permissions" })
+  permissions: Permission[];
 
   @Column()
   created_at: Date;
