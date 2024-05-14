@@ -8,9 +8,13 @@ export class Permission {
   @Column()
   code: string;
 
-  @Column()
+  @Column({
+    default: new Date(),
+  })
   created_at: Date;
 
-  @Column()
+  @Column({
+    default: new Date(),
+  })
   updated_at: Date;
 }

@@ -1,15 +1,9 @@
-import {
-  Body,
-  Controller,
-  HttpCode,
-  Post,
-  UseGuards,
-  UsePipes,
-} from "@nestjs/common";
+import { Body, Controller, HttpCode, Post, UsePipes } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { hash } from "bcryptjs";
-import { JwtAuthGuard } from "src/auth/jwt-auth.guard";
+import { Role } from "src/enums/role.enum";
 import { ZodValidationPipe } from "src/pipes/zod-validation-pipe";
+import { Roles } from "src/roles/roles.decorator";
 import { User } from "src/typeorm/entities/user.entity";
 import { Repository } from "typeorm";
 import { z } from "zod";
@@ -24,7 +18,7 @@ const createUserBodySchema = z.object({
 type CreateUserDto = z.infer<typeof createUserBodySchema>;
 
 @Controller("/users")
-@UseGuards(JwtAuthGuard)
+@Roles(Role.Admin)
 export class UserController {
   constructor(
     @InjectRepository(User)

@@ -5,6 +5,7 @@ import { AuthModule } from "./auth/auth.module";
 import { AuthController } from "./controllers/auth.controller";
 import { UserController } from "./controllers/user.controller";
 import { envSchema } from "./env";
+import { RolesModule } from "./roles/roles.module";
 import { TypeOrmRootModuleConfig } from "./typeorm/config";
 import { User } from "./typeorm/entities/user.entity";
 
@@ -17,6 +18,7 @@ import { User } from "./typeorm/entities/user.entity";
       isGlobal: true,
     }),
     AuthModule,
+    RolesModule,
   ],
   controllers: [UserController, AuthController],
   providers: [],

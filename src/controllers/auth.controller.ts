@@ -8,6 +8,7 @@ import {
 import { JwtService } from "@nestjs/jwt";
 import { InjectRepository } from "@nestjs/typeorm";
 import { compare } from "bcryptjs";
+import { Public } from "src/auth/public";
 import { ZodValidationPipe } from "src/pipes/zod-validation-pipe";
 import { User } from "src/typeorm/entities/user.entity";
 import { Repository } from "typeorm";
@@ -29,6 +30,7 @@ export class AuthController {
   ) {}
 
   @Post()
+  @Public()
   @UsePipes(new ZodValidationPipe(createSessionBodySchema))
   async create(@Body() { cpf, password }: CreateSessionDTO) {
     const user = await this.userRepository.findOneBy({ cpf });
