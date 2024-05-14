@@ -1,3 +1,6 @@
+import { Public } from "@/auth/public";
+import { ZodValidationPipe } from "@/pipes/zod-validation-pipe";
+import { User } from "@/typeorm/entities/user.entity";
 import {
   Body,
   Controller,
@@ -8,9 +11,6 @@ import {
 import { JwtService } from "@nestjs/jwt";
 import { InjectRepository } from "@nestjs/typeorm";
 import { compare } from "bcryptjs";
-import { Public } from "src/auth/public";
-import { ZodValidationPipe } from "src/pipes/zod-validation-pipe";
-import { User } from "src/typeorm/entities/user.entity";
 import { Repository } from "typeorm";
 import { z } from "zod";
 

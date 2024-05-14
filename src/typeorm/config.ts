@@ -7,6 +7,8 @@ export const TypeOrmRootModuleConfig = TypeOrmModule.forRootAsync({
     type: configService.get("DATABASE_TYPE"),
     url: configService.get("DATABASE_URL"),
     entities: [__dirname + "/**/*.entity{.ts,.js}"],
-    synchronize: true,
+    migrations: [__dirname + "/migrations/*{.ts,.js}"],
+    migrationsTableName: "migrations",
+    synchronize: false,
   }),
 });

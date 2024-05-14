@@ -1,8 +1,8 @@
+import { Role } from "@/enums/role.enum";
+import { User } from "@/typeorm/entities/user.entity";
 import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Role } from "src/enums/role.enum";
-import { User } from "src/typeorm/entities/user.entity";
 import { Repository } from "typeorm";
 import { ROLES_KEY } from "./roles.decorator";
 
