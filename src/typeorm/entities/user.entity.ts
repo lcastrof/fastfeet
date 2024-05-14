@@ -25,7 +25,7 @@ export class User {
   @Unique(["cpf"])
   cpf: string;
 
-  @Column()
+  @Column({ name: "password_hashed" })
   passwordHashed: string;
 
   @ManyToMany(() => Permission, {
