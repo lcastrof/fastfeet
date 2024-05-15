@@ -5,6 +5,7 @@ export class Delivery {
 
   public status: string;
 
+  public postedAt: Date;
   public retrievedAt: Date;
   public deliveredAt: Date;
   public returnedAt: Date;
