@@ -1,4 +1,4 @@
-import { Env } from "@/env";
+import { Env } from "@/infra/env";
 import { Module } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { APP_GUARD } from "@nestjs/core";

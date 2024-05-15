@@ -1,5 +1,5 @@
-import { Role } from "@/enums/role.enum";
-import { User } from "@/typeorm/entities/user.entity";
+import { User } from "@/infra/database/typeorm/entities/user.entity";
+import { Role } from "@/infra/enums/role.enum";
 import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
 import { InjectRepository } from "@nestjs/typeorm";

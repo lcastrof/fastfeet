@@ -1,6 +1,6 @@
-import { Public } from "@/auth/public";
-import { ZodValidationPipe } from "@/pipes/zod-validation-pipe";
-import { User } from "@/typeorm/entities/user.entity";
+import { Public } from "@/infra/auth/public";
+import { User } from "@/infra/database/typeorm/entities/user.entity";
+import { ZodValidationPipe } from "@/infra/http/pipes/zod-validation-pipe";
 import {
   Body,
   Controller,

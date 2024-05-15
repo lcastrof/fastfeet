@@ -1,4 +1,4 @@
-import { User } from "@/typeorm/entities/user.entity";
+import { User } from "@/infra/database/typeorm/entities/user.entity";
 import { Module } from "@nestjs/common";
 import { APP_GUARD } from "@nestjs/core";
 import { TypeOrmModule } from "@nestjs/typeorm";

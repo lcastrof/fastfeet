@@ -1,7 +1,7 @@
-import { Role } from "@/enums/role.enum";
-import { ZodValidationPipe } from "@/pipes/zod-validation-pipe";
-import { Roles } from "@/roles/roles.decorator";
-import { User } from "@/typeorm/entities/user.entity";
+import { User } from "@/infra/database/typeorm/entities/user.entity";
+import { Role } from "@/infra/enums/role.enum";
+import { ZodValidationPipe } from "@/infra/http/pipes/zod-validation-pipe";
+import { Roles } from "@/infra/roles/roles.decorator";
 import { Body, Controller, HttpCode, Post, UsePipes } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { hash } from "bcryptjs";
