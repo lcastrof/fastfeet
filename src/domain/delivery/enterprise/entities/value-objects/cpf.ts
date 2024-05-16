@@ -1,12 +1,12 @@
 export class Cpf {
-  constructor(public cpf: string) {
-    if (!Cpf.validate(cpf)) {
+  constructor(public value: string) {
+    if (!Cpf.validate(value)) {
       throw new Error(
         "Invalid CPF, expected 11 digits with no special characters",
       );
     }
 
-    this.cpf = cpf;
+    this.value = value;
   }
 
   static validate(cpf: string): boolean {
