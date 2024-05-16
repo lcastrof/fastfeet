@@ -10,4 +10,10 @@ interface DeliverymanProps {
   cpf: Cpf;
 }
 
-export class Deliveryman extends Entity<DeliverymanProps> {}
+export class Deliveryman extends Entity<DeliverymanProps> {
+  static create(props: DeliverymanProps) {
+    const deliveryman = new Deliveryman(props);
+
+    return deliveryman;
+  }
+}

@@ -22,7 +22,7 @@ export class CreateDeliverymanUseCase {
     latitude,
     longitude,
   }: CreateDeliverymanRequest): Promise<void> {
-    const deliveryman = new Deliveryman({
+    const deliveryman = Deliveryman.create({
       name,
       email,
       cpf: new Cpf(cpf),

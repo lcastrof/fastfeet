@@ -12,4 +12,10 @@ interface RecipientProps {
   longitude: number;
 }
 
-export class Recipient extends Entity<RecipientProps> {}
+export class Recipient extends Entity<RecipientProps> {
+  static create(props: RecipientProps) {
+    const recipient = new Recipient(props);
+
+    return recipient;
+  }
+}
