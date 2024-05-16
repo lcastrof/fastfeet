@@ -5,6 +5,8 @@ interface DeliverymanProps {
   name: string;
   email: string;
   password: string;
+  latitude: number;
+  longitude: number;
   cpf: Cpf;
 }
 

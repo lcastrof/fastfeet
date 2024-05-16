@@ -7,6 +7,8 @@ interface CreateDeliverymanRequest {
   email: string;
   password: string;
   cpf: string;
+  latitude: number;
+  longitude: number;
 }
 
 export class CreateDeliverymanUseCase {
@@ -17,12 +19,16 @@ export class CreateDeliverymanUseCase {
     email,
     cpf,
     password,
+    latitude,
+    longitude,
   }: CreateDeliverymanRequest): Promise<void> {
     const deliveryman = new Deliveryman({
       name,
       email,
       cpf: new Cpf(cpf),
       password,
+      latitude,
+      longitude,
     });
     await this.deliverymanRepository.create(deliveryman);
   }
