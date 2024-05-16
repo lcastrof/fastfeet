@@ -1,5 +1,5 @@
 import { Entity } from "@/core/entities/entity";
-import { Cpf } from "./value-objects/cpf";
+import { Cpf } from "@/domain/delivery/enterprise/entities/value-objects/cpf";
 
 interface DeliverymanProps {
   name: string;

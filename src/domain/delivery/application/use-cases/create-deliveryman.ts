@@ -1,6 +1,6 @@
-import { Deliveryman } from "../../enterprise/entities/deliveryman";
-import { Cpf } from "../../enterprise/entities/value-objects/cpf";
-import { DeliverymanRepository } from "../repositories/deliveryman-repository";
+import { DeliverymanRepository } from "@/domain/delivery/application/repositories/deliveryman-repository";
+import { Deliveryman } from "@/domain/delivery/enterprise/entities/deliveryman";
+import { Cpf } from "@/domain/delivery/enterprise/entities/value-objects/cpf";
 
 interface CreateDeliverymanRequest {
   name: string;
