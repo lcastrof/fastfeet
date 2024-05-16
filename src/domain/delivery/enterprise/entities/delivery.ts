@@ -1,17 +1,14 @@
-import { randomUUID } from "node:crypto";
+import { Entity } from "@/core/entities/entity";
 
-export class Delivery {
-  public id: string;
-
-  public status: string;
-
-  public postedAt: Date;
-  public retrievedAt: Date;
-  public deliveredAt: Date;
-  public returnedAt: Date;
-
-  constructor(id?: string, props?: Partial<Delivery>) {
-    Object.assign(this, props);
-    this.id = id ?? randomUUID();
-  }
+interface DeliveryProps {
+  status: string;
+  postedAt: Date;
+  retrievedAt: Date;
+  deliveredAt: Date;
+  returnedAt: Date;
+  photo: string;
+  recipientId: string;
+  deliverymanId: string;
 }
+
+export class Delivery extends Entity<DeliveryProps> {}

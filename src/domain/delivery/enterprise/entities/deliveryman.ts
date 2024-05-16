@@ -1,15 +1,11 @@
-import { randomUUID } from "node:crypto";
+import { Entity } from "@/core/entities/entity";
+import { Cpf } from "./value-objects/cpf";
 
-export class Deliveryman {
-  public id: string;
-
-  public name: string;
-  public email: string;
-  public password: string;
-  public cpf: string;
-
-  constructor(id?: string, props?: Partial<Deliveryman>) {
-    Object.assign(this, props);
-    this.id = id ?? randomUUID();
-  }
+interface DeliverymanProps {
+  name: string;
+  email: string;
+  password: string;
+  cpf: Cpf;
 }
+
+export class Deliveryman extends Entity<DeliverymanProps> {}

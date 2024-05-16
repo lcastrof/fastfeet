@@ -1,15 +1,11 @@
-import { randomUUID } from "node:crypto";
+import { Entity } from "@/core/entities/entity";
+import { Cpf } from "./value-objects/cpf";
 
-export class Administrator {
-  public id: string;
-
-  public name: string;
-  public email: string;
-  public password: string;
-  public cpf: string;
-
-  constructor(id?: string, props?: Partial<Administrator>) {
-    Object.assign(this, props);
-    this.id = id ?? randomUUID();
-  }
+interface AdministratorProps {
+  name: string;
+  email: string;
+  password: string;
+  cpf: Cpf;
 }
+
+export class Administrator extends Entity<AdministratorProps> {}
