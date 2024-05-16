@@ -11,6 +11,30 @@ interface DeliverymanProps {
 }
 
 export class Deliveryman extends Entity<DeliverymanProps> {
+  get name() {
+    return this.props.name;
+  }
+
+  get email() {
+    return this.props.email;
+  }
+
+  get password() {
+    return this.props.password;
+  }
+
+  get latitude() {
+    return this.props.latitude;
+  }
+
+  get longitude() {
+    return this.props.longitude;
+  }
+
+  get cpf() {
+    return this.props.cpf;
+  }
+
   static create(props: DeliverymanProps) {
     const deliveryman = new Deliveryman(props);
 
