@@ -1,4 +1,3 @@
-import { UniqueEntityID } from "@/core/entities/value-objects/unique-entity-id";
 import { DeliverymanRepository } from "@/domain/delivery/application/repositories/deliveryman-repository";
 import { Deliveryman } from "@/domain/delivery/enterprise/entities/deliveryman";
 
@@ -12,13 +11,13 @@ export class InMemoryDeliverymanRepository implements DeliverymanRepository {
 
   async findById(id: string): Promise<Deliveryman> {
     return this.deliverymen.find(
-      (deliveryman) => deliveryman.id === new UniqueEntityID(id),
+      (deliveryman) => deliveryman.id.toString() === id,
     );
   }
 
   async delete(id: string): Promise<void> {
     this.deliverymen = this.deliverymen.filter(
-      (deliveryman) => deliveryman.id !== new UniqueEntityID(id),
+      (deliveryman) => deliveryman.id.toString() !== id,
     );
   }
 }
