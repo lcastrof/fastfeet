@@ -1,7 +1,7 @@
 import { Entity } from "@/core/entities/entity";
 import { Cpf } from "@/domain/delivery/enterprise/entities/value-objects/cpf";
 
-interface DeliverymanProps {
+export interface DeliverymanProps {
   name: string;
   email: string;
   password: string;

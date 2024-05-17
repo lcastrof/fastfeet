@@ -1,6 +1,5 @@
+import { makeDeliveryman } from "test/factories/make-deliveryman";
 import { InMemoryDeliverymanRepository } from "test/repositories/in-memory-deliveryman-repository";
-import { Deliveryman } from "../../enterprise/entities/deliveryman";
-import { Cpf } from "../../enterprise/entities/value-objects/cpf";
 import { DeleteDeliverymanUseCase } from "./delete-deliveryman";
 
 let inMemoryDeliverymanRepository: InMemoryDeliverymanRepository;
@@ -12,14 +11,7 @@ describe("Delete Deliveryman", () => {
   });
 
   it("should be able to delete a deliveryman", async () => {
-    const deliveryman = Deliveryman.create({
-      name: "John Doe",
-      email: "john@doe.com",
-      cpf: new Cpf("12345678909"),
-      password: "password",
-      latitude: 0,
-      longitude: 0,
-    });
+    const deliveryman = makeDeliveryman();
 
     await inMemoryDeliverymanRepository.create(deliveryman);
 

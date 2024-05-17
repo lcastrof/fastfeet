@@ -1,6 +1,5 @@
+import { makeDeliveryman } from "test/factories/make-deliveryman";
 import { InMemoryDeliverymanRepository } from "test/repositories/in-memory-deliveryman-repository";
-import { Deliveryman } from "../../enterprise/entities/deliveryman";
-import { Cpf } from "../../enterprise/entities/value-objects/cpf";
 import { GetDeliverymanByIdUseCase } from "./get-deliveryman-by-id";
 
 let inMemoryDeliverymanRepository: InMemoryDeliverymanRepository;
@@ -13,14 +12,7 @@ describe("Get Deliveryman By Id", () => {
   });
 
   it("should be able to get a deliveryman by id", async () => {
-    const mockedDeliveryman = Deliveryman.create({
-      name: "John Doe",
-      email: "john@doe.com",
-      cpf: new Cpf("12345678909"),
-      password: "password",
-      latitude: 0,
-      longitude: 0,
-    });
+    const mockedDeliveryman = makeDeliveryman();
 
     await inMemoryDeliverymanRepository.create(mockedDeliveryman);
 
