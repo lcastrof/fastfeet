@@ -11,6 +11,10 @@ interface CreateDeliverymanRequest {
   longitude: number;
 }
 
+interface CreateDeliverymanResponse {
+  deliveryman: Deliveryman;
+}
+
 export class CreateDeliverymanUseCase {
   constructor(private readonly deliverymanRepository: DeliverymanRepository) {}
 
@@ -21,7 +25,7 @@ export class CreateDeliverymanUseCase {
     password,
     latitude,
     longitude,
-  }: CreateDeliverymanRequest): Promise<void> {
+  }: CreateDeliverymanRequest): Promise<CreateDeliverymanResponse> {
     const deliveryman = Deliveryman.create({
       name,
       email,
@@ -31,5 +35,9 @@ export class CreateDeliverymanUseCase {
       longitude,
     });
     await this.deliverymanRepository.create(deliveryman);
+
+    return {
+      deliveryman,
+    };
   }
 }
