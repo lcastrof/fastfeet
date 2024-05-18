@@ -1,4 +1,5 @@
 import { Entity } from "@/core/entities/entity";
+import { UniqueEntityID } from "@/core/entities/value-objects/unique-entity-id";
 
 interface RecipientProps {
   cep: string;
@@ -49,8 +50,8 @@ export class Recipient extends Entity<RecipientProps> {
     return this.props.longitude;
   }
 
-  static create(props: RecipientProps) {
-    const recipient = new Recipient(props);
+  static create(props: RecipientProps, id: UniqueEntityID) {
+    const recipient = new Recipient(props, id);
 
     return recipient;
   }
