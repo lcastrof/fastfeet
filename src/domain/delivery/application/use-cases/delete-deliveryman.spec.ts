@@ -23,4 +23,18 @@ describe("Delete Deliveryman", () => {
 
     expect(inMemoryDeliverymanRepository.deliverymen).toHaveLength(0);
   });
+
+  it("should not be able to delete a deliveryman that does not exist", async () => {
+    const deliveryman = makeDeliveryman();
+
+    await inMemoryDeliverymanRepository.create(deliveryman);
+
+    expect(inMemoryDeliverymanRepository.deliverymen).toHaveLength(1);
+
+    expect(
+      sut.execute({
+        id: "2",
+      }),
+    ).rejects.toThrowError("Deliveryman not found");
+  });
 });

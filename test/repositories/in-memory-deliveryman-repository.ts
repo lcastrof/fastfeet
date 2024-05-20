@@ -8,6 +8,14 @@ export class InMemoryDeliverymanRepository implements DeliverymanRepository {
     this.deliverymen.push(deliveryman);
   }
 
+  async save(deliveryman: Deliveryman): Promise<void> {
+    const index = this.deliverymen.findIndex(
+      (item) => item.id.toString() === deliveryman.id.toString(),
+    );
+
+    this.deliverymen[index] = deliveryman;
+  }
+
   async findById(id: string): Promise<Deliveryman> {
     const deliveryman = this.deliverymen.find(
       (deliveryman) => deliveryman.id.toString() === id,
