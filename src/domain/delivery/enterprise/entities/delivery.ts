@@ -2,7 +2,7 @@ import { Entity } from "@/core/entities/entity";
 import { UniqueEntityID } from "@/core/entities/value-objects/unique-entity-id";
 import { Status } from "@/core/enums/status";
 
-interface DeliveryProps {
+export interface DeliveryProps {
   status: Status;
   photo: string;
   recipientId: UniqueEntityID;
