@@ -1,3 +1,4 @@
+import { Either, right } from "@/core/either";
 import { DeliverymanRepository } from "@/domain/delivery/application/repositories/deliveryman-repository";
 import { Deliveryman } from "@/domain/delivery/enterprise/entities/deliveryman";
 import { Cpf } from "@/domain/delivery/enterprise/entities/value-objects/cpf";
@@ -11,9 +12,7 @@ interface CreateDeliverymanRequest {
   longitude: number;
 }
 
-interface CreateDeliverymanResponse {
-  deliveryman: Deliveryman;
-}
+type CreateDeliverymanResponse = Either<null, { deliveryman: Deliveryman }>;
 
 export class CreateDeliverymanUseCase {
   constructor(private readonly deliverymanRepository: DeliverymanRepository) {}
@@ -36,8 +35,6 @@ export class CreateDeliverymanUseCase {
     });
     await this.deliverymanRepository.create(deliveryman);
 
-    return {
-      deliveryman,
-    };
+    return right({ deliveryman });
   }
 }

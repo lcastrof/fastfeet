@@ -22,11 +22,11 @@ describe("Create Deliveryman", () => {
       longitude: 0,
     };
 
-    const { deliveryman } = await sut.execute(request);
+    const result = await sut.execute(request);
 
-    expect(inMemoryDeliverymanRepository.deliverymen).toHaveLength(1);
+    expect(result.isRight()).toBe(true);
     expect(inMemoryDeliverymanRepository.deliverymen[0].id).toEqual(
-      deliveryman.id,
+      result.value.deliveryman.id,
     );
   });
 });
