@@ -2,6 +2,7 @@ import { makeDeliveryman } from "test/factories/make-deliveryman";
 import { InMemoryDeliverymanRepository } from "test/repositories/in-memory-deliveryman-repository";
 import { Cpf } from "../../enterprise/entities/value-objects/cpf";
 import { EditDeliverymanUseCase } from "./edit-deliveryman";
+import { ResourceNotFoundError } from "./errors/resource-not-found-error";
 
 let inMemoryDeliverymanRepository: InMemoryDeliverymanRepository;
 let sut: EditDeliverymanUseCase;
@@ -27,8 +28,9 @@ describe("Edit Deliveryman", () => {
       longitude: 0,
     };
 
-    await sut.execute(editedDeliveryman);
+    const result = await sut.execute(editedDeliveryman);
 
+    expect(result.isRight()).toBe(true);
     expect(inMemoryDeliverymanRepository.deliverymen).toHaveLength(1);
     expect(inMemoryDeliverymanRepository.deliverymen[0]).toMatchObject(
       expect.objectContaining({
@@ -48,15 +50,17 @@ describe("Edit Deliveryman", () => {
 
     expect(inMemoryDeliverymanRepository.deliverymen).toHaveLength(1);
 
-    expect(
-      sut.execute({
-        id: "2",
-        name: "John Doe",
-        email: "john@doe.com",
-        cpf: "12345678909",
-        latitude: 0,
-        longitude: 0,
-      }),
-    ).rejects.toThrowError("Deliveryman not found");
+    const result = await sut.execute({
+      id: "2",
+      name: "John Doe",
+      email: "john@doe.com",
+      cpf: "12345678909",
+      latitude: 0,
+      longitude: 0,
+    });
+
+    expect(result.isLeft()).toBe(true);
+
+    expect(result.value).toBeInstanceOf(ResourceNotFoundError);
   });
 });

@@ -1,5 +1,8 @@
+import { Either, left, right } from "@/core/either";
 import { DeliverymanRepository } from "@/domain/delivery/application/repositories/deliveryman-repository";
 import { Cpf } from "@/domain/delivery/enterprise/entities/value-objects/cpf";
+import { InvalidCpfError } from "./errors/invalid-cpf-error";
+import { ResourceNotFoundError } from "./errors/resource-not-found-error";
 
 interface EditDeliverymanRequest {
   id: string;
@@ -10,7 +13,10 @@ interface EditDeliverymanRequest {
   longitude: number;
 }
 
-interface EditDeliverymanResponse {}
+type EditDeliverymanResponse = Either<
+  ResourceNotFoundError | InvalidCpfError,
+  void
+>;
 
 export class EditDeliverymanUseCase {
   constructor(private readonly deliverymanRepository: DeliverymanRepository) {}
@@ -26,11 +32,11 @@ export class EditDeliverymanUseCase {
     const deliveryman = await this.deliverymanRepository.findById(id);
 
     if (!deliveryman) {
-      throw new Error("Deliveryman not found");
+      return left(new ResourceNotFoundError());
     }
 
     if (!Cpf.validate(cpf)) {
-      throw new Error("Invalid CPF");
+      return left(new InvalidCpfError());
     }
 
     deliveryman.name = name;
@@ -41,6 +47,6 @@ export class EditDeliverymanUseCase {
 
     await this.deliverymanRepository.save(deliveryman);
 
-    return {};
+    return right(null);
   }
 }
