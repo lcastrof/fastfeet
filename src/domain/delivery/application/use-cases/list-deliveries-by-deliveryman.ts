@@ -1,3 +1,4 @@
+import { Either, right } from "@/core/either";
 import { PaginatedResponse } from "@/core/repositories/pagination";
 import { Delivery } from "../../enterprise/entities/delivery";
 import { DeliveryRepository } from "../repositories/delivery-repository";
@@ -8,8 +9,10 @@ interface ListDeliveriesByDeliverymanRequest {
   itemsPerPage: number;
 }
 
-interface ListDeliveriesByDeliverymanResponse
-  extends PaginatedResponse<Delivery> {}
+type ListDeliveriesByDeliverymanResponse = Either<
+  null,
+  PaginatedResponse<Delivery>
+>;
 
 export class ListDeliveriesByDeliverymanUseCase {
   constructor(private readonly deliveryRepository: DeliveryRepository) {}
@@ -25,9 +28,6 @@ export class ListDeliveriesByDeliverymanUseCase {
         itemsPerPage: itemsPerPage,
       });
 
-    return {
-      data,
-      meta,
-    };
+    return right({ data, meta });
   }
 }

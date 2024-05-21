@@ -25,14 +25,15 @@ describe("Find deliveries by deliveryman", () => {
       await inMemoryDeliveryRepository.create(delivery);
     });
 
-    const { data, meta } = await sut.execute({
+    const result = await sut.execute({
       deliverymanId: mockedDeliveryman.id.toString(),
       page: 1,
       itemsPerPage: 10,
     });
 
-    expect(data).toHaveLength(2);
-    expect(meta.totalItems).toEqual(2);
+    expect(result.isRight()).toBe(true);
+    expect(result.value.data).toHaveLength(2);
+    expect(result.value.meta.totalItems).toEqual(2);
   });
 
   it("should paginate correctly", async () => {
@@ -48,14 +49,15 @@ describe("Find deliveries by deliveryman", () => {
       await inMemoryDeliveryRepository.create(delivery);
     });
 
-    const { data, meta } = await sut.execute({
+    const result = await sut.execute({
       deliverymanId: mockedDeliveryman.id.toString(),
       page: 1,
       itemsPerPage: 1,
     });
 
-    expect(data).toHaveLength(1);
-    expect(meta.totalItems).toEqual(3);
-    expect(meta.totalPages).toEqual(3);
+    expect(result.isRight()).toBe(true);
+    expect(result.value.data).toHaveLength(1);
+    expect(result.value.meta.totalItems).toEqual(3);
+    expect(result.value.meta.totalPages).toEqual(3);
   });
 });
