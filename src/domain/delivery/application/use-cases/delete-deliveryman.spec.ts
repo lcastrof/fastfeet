@@ -1,6 +1,7 @@
 import { makeDeliveryman } from "test/factories/make-deliveryman";
 import { InMemoryDeliverymanRepository } from "test/repositories/in-memory-deliveryman-repository";
 import { DeleteDeliverymanUseCase } from "./delete-deliveryman";
+import { ResourceNotFoundError } from "./errors/resource-not-found-error";
 
 let inMemoryDeliverymanRepository: InMemoryDeliverymanRepository;
 let sut: DeleteDeliverymanUseCase;
@@ -31,10 +32,12 @@ describe("Delete Deliveryman", () => {
 
     expect(inMemoryDeliverymanRepository.deliverymen).toHaveLength(1);
 
-    expect(
-      sut.execute({
-        id: "2",
-      }),
-    ).rejects.toThrowError("Deliveryman not found");
+    const result = await sut.execute({
+      id: "2",
+    });
+
+    expect(result.isLeft()).toBe(true);
+
+    expect(result.value).toBeInstanceOf(ResourceNotFoundError);
   });
 });
