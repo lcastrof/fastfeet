@@ -16,11 +16,13 @@ describe("Get Deliveryman By Id", () => {
 
     await inMemoryDeliverymanRepository.create(mockedDeliveryman);
 
-    const { deliveryman } = await sut.execute({
+    const result = await sut.execute({
       id: mockedDeliveryman.id.toString(),
     });
 
-    expect(deliveryman.id).toBeTruthy();
-    expect(deliveryman.id.toString()).toEqual(mockedDeliveryman.id.toString());
+    expect(result.isRight()).toBe(true);
+    expect(result.value.deliveryman.id.toString()).toEqual(
+      mockedDeliveryman.id.toString(),
+    );
   });
 });
