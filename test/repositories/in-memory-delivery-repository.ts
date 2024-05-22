@@ -24,7 +24,6 @@ export class InMemoryDeliveryRepository implements DeliveryRepository {
     deliverymanId: string,
     params: PaginationParams,
   ): Promise<PaginatedResponse<Delivery>> {
-    console.log(deliverymanId);
     const deliveries = this.deliveries.filter(
       (delivery) => delivery.deliverymanId.toString() === deliverymanId,
     );
