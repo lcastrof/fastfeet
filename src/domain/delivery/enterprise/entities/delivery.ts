@@ -1,4 +1,4 @@
-import { Entity } from "@/core/entities/entity";
+import { AggregateRoot } from "@/core/entities/aggregate-root";
 import { UniqueEntityID } from "@/core/entities/value-objects/unique-entity-id";
 import { Status } from "@/core/enums/status";
 
@@ -13,7 +13,7 @@ export interface DeliveryProps {
   returnedAt?: Date;
 }
 
-export class Delivery extends Entity<DeliveryProps> {
+export class Delivery extends AggregateRoot<DeliveryProps> {
   get status() {
     return this.props.status;
   }
