@@ -1,12 +1,13 @@
 import { AggregateRoot } from "@/core/entities/aggregate-root";
 import { UniqueEntityID } from "@/core/entities/value-objects/unique-entity-id";
 import { Status } from "@/core/enums/status";
+import { Attachment } from "./attachment";
 
 export interface DeliveryProps {
   status: Status;
-  photo: string;
   recipientId: UniqueEntityID;
-  deliverymanId: UniqueEntityID;
+  deliverymanId?: UniqueEntityID;
+  attachment?: Attachment;
   postedAt?: Date;
   retrievedAt?: Date;
   deliveredAt?: Date;
@@ -16,10 +17,6 @@ export interface DeliveryProps {
 export class Delivery extends AggregateRoot<DeliveryProps> {
   get status() {
     return this.props.status;
-  }
-
-  get photo() {
-    return this.props.photo;
   }
 
   get recipientId() {
@@ -32,6 +29,10 @@ export class Delivery extends AggregateRoot<DeliveryProps> {
 
   get postedAt() {
     return this.props.postedAt;
+  }
+
+  get attachment() {
+    return this.props.attachment;
   }
 
   get retrievedAt() {
