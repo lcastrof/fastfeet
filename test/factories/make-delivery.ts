@@ -14,7 +14,6 @@ export function makeDelivery(
     {
       status: faker.helpers.enumValue(Status),
       deliverymanId: new UniqueEntityID(),
-      photo: faker.image.url(),
       recipientId: new UniqueEntityID(),
       ...override,
     },

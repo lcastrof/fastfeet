@@ -4,9 +4,12 @@ import {
 } from "@/core/repositories/pagination";
 import { DeliveryRepository } from "@/domain/delivery/application/repositories/delivery-repository";
 import { Delivery } from "@/domain/delivery/enterprise/entities/delivery";
+import { InMemoryAttachmentRepository } from "./in-memory-attachment-repository";
 
 export class InMemoryDeliveryRepository implements DeliveryRepository {
   public deliveries: Delivery[] = [];
+
+  constructor(private attachmentRepository: InMemoryAttachmentRepository) {}
 
   async findById(id: string): Promise<Delivery> {
     const delivery = this.deliveries.find(
@@ -59,5 +62,7 @@ export class InMemoryDeliveryRepository implements DeliveryRepository {
     this.deliveries = this.deliveries.filter(
       (delivery) => delivery.id.toString() !== id,
     );
+
+    this.attachmentRepository.deleteByDeliveryId(id);
   }
 }
