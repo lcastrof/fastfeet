@@ -1,8 +1,8 @@
 import { Either, left, right } from "@/core/either";
+import { ResourceNotFoundError } from "@/core/errors/resource-not-found-error";
 import { DeliverymanRepository } from "@/domain/delivery/application/repositories/deliveryman-repository";
 import { Cpf } from "@/domain/delivery/enterprise/entities/value-objects/cpf";
 import { InvalidCpfError } from "./errors/invalid-cpf-error";
-import { ResourceNotFoundError } from "./errors/resource-not-found-error";
 
 interface EditDeliverymanRequest {
   id: string;

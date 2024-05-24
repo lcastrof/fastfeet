@@ -1,7 +1,7 @@
+import { ResourceNotFoundError } from "@/core/errors/resource-not-found-error";
 import { makeDeliveryman } from "test/factories/make-deliveryman";
 import { InMemoryDeliverymanRepository } from "test/repositories/in-memory-deliveryman-repository";
 import { DeleteDeliverymanUseCase } from "./delete-deliveryman";
-import { ResourceNotFoundError } from "./errors/resource-not-found-error";
 
 let inMemoryDeliverymanRepository: InMemoryDeliverymanRepository;
 let sut: DeleteDeliverymanUseCase;

@@ -1,9 +1,9 @@
+import { ResourceNotFoundError } from "@/core/errors/resource-not-found-error";
 import { makeDelivery } from "test/factories/make-delivery";
 import { InMemoryAttachmentRepository } from "test/repositories/in-memory-attachment-repository";
 import { InMemoryDeliveryRepository } from "test/repositories/in-memory-delivery-repository";
 import { Attachment } from "../../enterprise/entities/attachment";
 import { DeleteDeliveryUseCase } from "./delete-delivery";
-import { ResourceNotFoundError } from "./errors/resource-not-found-error";
 
 let inMemoryAttachmentRepository: InMemoryAttachmentRepository;
 let inMemoryDeliveryRepository: InMemoryDeliveryRepository;

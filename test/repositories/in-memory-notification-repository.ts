@@ -4,7 +4,23 @@ import { Notification } from "@/domain/notification/enterprise/entities/notifica
 export class InMemoryNotificationRepository implements NotificationRepository {
   public notifications: Notification[] = [];
 
+  async findById(id: string): Promise<Notification | null> {
+    return (
+      this.notifications.find(
+        (notification) => notification.id.toString() === id,
+      ) || null
+    );
+  }
+
   async create(notification: Notification): Promise<void> {
     this.notifications.push(notification);
+  }
+
+  async save(notification: Notification): Promise<void> {
+    const index = this.notifications.findIndex(
+      (item) => item.id.toString() === notification.id.toString(),
+    );
+
+    this.notifications[index] = notification;
   }
 }

@@ -1,8 +1,8 @@
+import { ResourceNotFoundError } from "@/core/errors/resource-not-found-error";
 import { makeDeliveryman } from "test/factories/make-deliveryman";
 import { InMemoryDeliverymanRepository } from "test/repositories/in-memory-deliveryman-repository";
 import { Cpf } from "../../enterprise/entities/value-objects/cpf";
 import { EditDeliverymanUseCase } from "./edit-deliveryman";
-import { ResourceNotFoundError } from "./errors/resource-not-found-error";
 
 let inMemoryDeliverymanRepository: InMemoryDeliverymanRepository;
 let sut: EditDeliverymanUseCase;

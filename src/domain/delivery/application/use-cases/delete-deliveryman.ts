@@ -1,6 +1,6 @@
 import { Either, left } from "@/core/either";
+import { ResourceNotFoundError } from "@/core/errors/resource-not-found-error";
 import { DeliverymanRepository } from "@/domain/delivery/application/repositories/deliveryman-repository";
-import { ResourceNotFoundError } from "./errors/resource-not-found-error";
 
 interface DeleteDeliverymanRequest {
   id: string;
