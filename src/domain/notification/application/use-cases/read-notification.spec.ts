@@ -29,4 +29,38 @@ describe("Read Notification", () => {
     expect(result.isRight()).toBe(true);
     expect(inMemoryNotificationRepository.notifications[0].isRead()).toBe(true);
   });
+
+  it("should not be able to read a notification that does not exist", async () => {
+    const notification = makeNotification({
+      recipientId: new UniqueEntityID("1"),
+    });
+
+    await inMemoryNotificationRepository.create(notification);
+
+    expect(notification.isRead()).toBe(false);
+
+    const result = await sut.execute({
+      notificationId: "2",
+      recipientId: "1",
+    });
+
+    expect(result.isLeft()).toBe(true);
+  });
+
+  it("should not be able to read a notification that does not belong to the recipient", async () => {
+    const notification = makeNotification({
+      recipientId: new UniqueEntityID("1"),
+    });
+
+    await inMemoryNotificationRepository.create(notification);
+
+    expect(notification.isRead()).toBe(false);
+
+    const result = await sut.execute({
+      notificationId: notification.id.toString(),
+      recipientId: "2",
+    });
+
+    expect(result.isLeft()).toBe(true);
+  });
 });
