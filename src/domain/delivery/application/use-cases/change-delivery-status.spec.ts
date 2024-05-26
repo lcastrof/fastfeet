@@ -31,6 +31,7 @@ describe("Change Delivery Status", () => {
 
     expect(inMemoryDeliveryRepository.deliveries).toHaveLength(1);
     expect(delivery.status.title).toEqual(Status.NOT_STARTED);
+    expect(delivery.domainEvents).toHaveLength(0);
     expect(inMemoryDeliveryStatusRepository.deliveryStatuses).toHaveLength(0);
 
     const newStatus = makeDeliveryStatus({ title: Status.IN_DELIVERY });
@@ -43,6 +44,7 @@ describe("Change Delivery Status", () => {
     });
 
     expect(result.isRight()).toBe(true);
+    expect(delivery.domainEvents).toHaveLength(1);
     expect(inMemoryDeliveryRepository.deliveries[0].status.title).toEqual(
       Status.IN_DELIVERY,
     );

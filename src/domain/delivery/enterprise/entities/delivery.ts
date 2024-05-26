@@ -1,6 +1,7 @@
 import { AggregateRoot } from "@/core/entities/aggregate-root";
 import { UniqueEntityID } from "@/core/entities/value-objects/unique-entity-id";
 import { Status } from "@/core/enums/status";
+import { DeliveryStatusChangeEvent } from "../events/delivery-status-change-event";
 import { Attachment } from "./attachment";
 import { DeliveryStatus } from "./delivery-status";
 
@@ -50,6 +51,8 @@ export class Delivery extends AggregateRoot<DeliveryProps> {
 
   set status(status: DeliveryStatus) {
     this.props.status = status;
+
+    this.addDomainEvent(new DeliveryStatusChangeEvent(status));
   }
 
   static create(props: DeliveryProps, id?: UniqueEntityID) {
