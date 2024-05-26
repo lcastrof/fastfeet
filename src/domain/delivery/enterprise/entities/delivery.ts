@@ -2,10 +2,11 @@ import { AggregateRoot } from "@/core/entities/aggregate-root";
 import { UniqueEntityID } from "@/core/entities/value-objects/unique-entity-id";
 import { Status } from "@/core/enums/status";
 import { Attachment } from "./attachment";
+import { DeliveryStatus } from "./delivery-status";
 
 export interface DeliveryProps {
-  status: Status;
   recipientId: UniqueEntityID;
+  status?: DeliveryStatus;
   deliverymanId?: UniqueEntityID;
   attachment?: Attachment;
   postedAt?: Date;
@@ -47,8 +48,19 @@ export class Delivery extends AggregateRoot<DeliveryProps> {
     return this.props.returnedAt;
   }
 
+  set status(status: DeliveryStatus) {
+    this.props.status = status;
+  }
+
   static create(props: DeliveryProps, id?: UniqueEntityID) {
-    const delivery = new Delivery(props, id);
+    const delivery = new Delivery(
+      {
+        ...props,
+        status:
+          props.status || DeliveryStatus.create({ title: Status.NOT_STARTED }),
+      },
+      id,
+    );
 
     return delivery;
   }

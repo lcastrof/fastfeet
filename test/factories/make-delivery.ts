@@ -4,7 +4,7 @@ import {
   Delivery,
   DeliveryProps,
 } from "@/domain/delivery/enterprise/entities/delivery";
-import { faker } from "@faker-js/faker";
+import { DeliveryStatus } from "@/domain/delivery/enterprise/entities/delivery-status";
 
 export function makeDelivery(
   override: Partial<DeliveryProps> = {},
@@ -12,7 +12,7 @@ export function makeDelivery(
 ) {
   const delivery = Delivery.create(
     {
-      status: faker.helpers.enumValue(Status),
+      status: DeliveryStatus.create({ title: Status.NOT_STARTED }),
       deliverymanId: new UniqueEntityID(),
       recipientId: new UniqueEntityID(),
       ...override,

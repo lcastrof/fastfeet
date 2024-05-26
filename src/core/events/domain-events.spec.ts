@@ -1,12 +1,12 @@
 import { DomainEvents } from "@/core/events/domain-events";
 import { vi } from "vitest";
 import { AggregateRoot } from "../entities/aggregate-root";
-import { DomainEvent } from "../events/domain-event";
 import { UniqueEntityID } from "../entities/value-objects/unique-entity-id";
+import { DomainEvent } from "../events/domain-event";
 
 class CustomAggregateCreated implements DomainEvent {
   public ocurredAt: Date;
-  private aggregate: CustomAggregate; // eslint-disable-line
+  private aggregate: CustomAggregate;
 
   constructor(aggregate: CustomAggregate) {
     this.aggregate = aggregate;

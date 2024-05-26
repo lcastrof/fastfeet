@@ -1,7 +1,7 @@
 import { Entity } from "@/core/entities/entity";
 import { UniqueEntityID } from "@/core/entities/value-objects/unique-entity-id";
 
-interface DeliveryStatusProps {
+export interface DeliveryStatusProps {
   title: string;
 }
 
@@ -11,8 +11,8 @@ export class DeliveryStatus extends Entity<DeliveryStatusProps> {
   }
 
   static create(props: DeliveryStatusProps, id?: UniqueEntityID) {
-    const deliverystatus = new DeliveryStatus(props, id);
+    const deliveryStatus = new DeliveryStatus(props, id);
 
-    return deliverystatus;
+    return deliveryStatus;
   }
 }
