@@ -1,12 +1,17 @@
 import { InMemoryDeliveryRepository } from "test/repositories/in-memory-delivery-repository";
 import { CreateDeliveryUseCase } from "./create-delivery";
+import { InMemoryAttachmentRepository } from "test/repositories/in-memory-attachment-repository";
 
 let inMemoryDeliveryRepository: InMemoryDeliveryRepository;
+let inMemoryAttachmentRepository: InMemoryAttachmentRepository;
 let sut: CreateDeliveryUseCase;
 
 describe("Create Delivery", () => {
   beforeEach(() => {
-    inMemoryDeliveryRepository = new InMemoryDeliveryRepository();
+    inMemoryAttachmentRepository = new InMemoryAttachmentRepository();
+    inMemoryDeliveryRepository = new InMemoryDeliveryRepository(
+      inMemoryAttachmentRepository,
+    );
     sut = new CreateDeliveryUseCase(inMemoryDeliveryRepository);
   });
 

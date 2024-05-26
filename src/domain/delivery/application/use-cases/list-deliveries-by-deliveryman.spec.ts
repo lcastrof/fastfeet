@@ -2,13 +2,18 @@ import { makeDelivery } from "test/factories/make-delivery";
 import { makeDeliveryman } from "test/factories/make-deliveryman";
 import { InMemoryDeliveryRepository } from "test/repositories/in-memory-delivery-repository";
 import { ListDeliveriesByDeliverymanUseCase } from "./list-deliveries-by-deliveryman";
+import { InMemoryAttachmentRepository } from "test/repositories/in-memory-attachment-repository";
 
 let inMemoryDeliveryRepository: InMemoryDeliveryRepository;
+let inMemoryAttachmentRepository: InMemoryAttachmentRepository;
 let sut: ListDeliveriesByDeliverymanUseCase;
 
 describe("Find deliveries by deliveryman", () => {
   beforeEach(() => {
-    inMemoryDeliveryRepository = new InMemoryDeliveryRepository();
+    inMemoryAttachmentRepository = new InMemoryAttachmentRepository();
+    inMemoryDeliveryRepository = new InMemoryDeliveryRepository(
+      inMemoryAttachmentRepository,
+    );
     sut = new ListDeliveriesByDeliverymanUseCase(inMemoryDeliveryRepository);
   });
 
