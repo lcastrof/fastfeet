@@ -52,7 +52,12 @@ export class Delivery extends AggregateRoot<DeliveryProps> {
   set status(status: DeliveryStatus) {
     this.props.status = status;
 
-    this.addDomainEvent(new DeliveryStatusChangeEvent(status));
+    this.addDomainEvent(
+      new DeliveryStatusChangeEvent({
+        status,
+        delivery: this,
+      }),
+    );
   }
 
   static create(props: DeliveryProps, id?: UniqueEntityID) {

@@ -1,3 +1,4 @@
+import { DomainEvents } from "@/core/events/domain-events";
 import {
   PaginatedResponse,
   PaginationParams,
@@ -51,11 +52,13 @@ export class InMemoryDeliveryRepository implements DeliveryRepository {
   }
 
   async save(delivery: Delivery): Promise<void> {
-    const index = this.deliveries.findIndex(
+    const oldDeliveryIndex = this.deliveries.findIndex(
       (item) => item.id.toString() === delivery.id.toString(),
     );
 
-    this.deliveries[index] = delivery;
+    DomainEvents.dispatchEventsForAggregate(delivery.id);
+
+    this.deliveries[oldDeliveryIndex] = delivery;
   }
 
   async delete(id: string): Promise<void> {

@@ -44,7 +44,6 @@ describe("Change Delivery Status", () => {
     });
 
     expect(result.isRight()).toBe(true);
-    expect(delivery.domainEvents).toHaveLength(1);
     expect(inMemoryDeliveryRepository.deliveries[0].status.title).toEqual(
       Status.IN_DELIVERY,
     );
