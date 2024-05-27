@@ -1,7 +1,7 @@
 import { Entity } from "@/core/entities/entity";
 import { UniqueEntityID } from "@/core/entities/value-objects/unique-entity-id";
 
-interface RecipientProps {
+export interface RecipientProps {
   cep: string;
   street: string;
   number: number;
@@ -50,7 +50,7 @@ export class Recipient extends Entity<RecipientProps> {
     return this.props.longitude;
   }
 
-  static create(props: RecipientProps, id: UniqueEntityID) {
+  static create(props: RecipientProps, id?: UniqueEntityID) {
     const recipient = new Recipient(props, id);
 
     return recipient;
