@@ -1,10 +1,11 @@
 import { Entity } from "@/core/entities/entity";
 import { UniqueEntityID } from "@/core/entities/value-objects/unique-entity-id";
 import { Cpf } from "./value-objects/cpf";
+import { Email } from "./value-objects/email";
 
 interface AdministratorProps {
   name: string;
-  email: string;
+  email: Email;
   password: string;
   cpf: Cpf;
 }

@@ -2,10 +2,11 @@ import { Either, right } from "@/core/either";
 import { DeliverymanRepository } from "@/domain/delivery/application/repositories/deliveryman-repository";
 import { Deliveryman } from "@/domain/delivery/enterprise/entities/deliveryman";
 import { Cpf } from "@/domain/delivery/enterprise/entities/value-objects/cpf";
+import { Email } from "../../enterprise/entities/value-objects/email";
 
 interface CreateDeliverymanRequest {
   name: string;
-  email: string;
+  email: Email;
   password: string;
   cpf: string;
   latitude: number;

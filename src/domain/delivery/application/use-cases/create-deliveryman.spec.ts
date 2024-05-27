@@ -1,4 +1,5 @@
 import { InMemoryDeliverymanRepository } from "test/repositories/in-memory-deliveryman-repository";
+import { Email } from "../../enterprise/entities/value-objects/email";
 import { CreateDeliverymanUseCase } from "./create-deliveryman";
 
 let inMemoryDeliverymanRepository: InMemoryDeliverymanRepository;
@@ -15,7 +16,7 @@ describe("Create Deliveryman", () => {
     const request = {
       id: "1",
       name: "John Doe",
-      email: "john@doe.com",
+      email: Email.create("john@doe.com"),
       cpf: "12345678909",
       password: "password",
       latitude: 0,

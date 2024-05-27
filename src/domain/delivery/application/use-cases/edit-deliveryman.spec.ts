@@ -2,6 +2,7 @@ import { ResourceNotFoundError } from "@/core/errors/resource-not-found-error";
 import { makeDeliveryman } from "test/factories/make-deliveryman";
 import { InMemoryDeliverymanRepository } from "test/repositories/in-memory-deliveryman-repository";
 import { Cpf } from "../../enterprise/entities/value-objects/cpf";
+import { Email } from "../../enterprise/entities/value-objects/email";
 import { EditDeliverymanUseCase } from "./edit-deliveryman";
 
 let inMemoryDeliverymanRepository: InMemoryDeliverymanRepository;
@@ -22,7 +23,7 @@ describe("Edit Deliveryman", () => {
     const editedDeliveryman = {
       id: deliveryman.id.toString(),
       name: "John Doe",
-      email: "john@doe.com",
+      email: Email.create("john@doe.com"),
       cpf: "12345678909",
       latitude: 0,
       longitude: 0,
@@ -53,7 +54,7 @@ describe("Edit Deliveryman", () => {
     const result = await sut.execute({
       id: "2",
       name: "John Doe",
-      email: "john@doe.com",
+      email: Email.create("john@doe.com"),
       cpf: "12345678909",
       latitude: 0,
       longitude: 0,

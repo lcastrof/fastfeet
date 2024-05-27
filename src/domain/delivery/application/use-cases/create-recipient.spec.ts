@@ -1,4 +1,5 @@
 import { InMemoryRecipientRepository } from "test/repositories/in-memory-recipient-repository";
+import { Email } from "../../enterprise/entities/value-objects/email";
 import { CreateRecipientUseCase } from "./create-recipient";
 
 let inMemoryRecipientRepository: InMemoryRecipientRepository;
@@ -12,6 +13,8 @@ describe("Create Recipient", () => {
 
   it("should be able to create a recipient", async () => {
     const request = {
+      name: "Name",
+      email: Email.create("john@doe.com"),
       cep: "12345678",
       city: "City",
       complement: "Complement",

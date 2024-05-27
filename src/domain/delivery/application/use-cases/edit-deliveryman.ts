@@ -2,12 +2,13 @@ import { Either, left, right } from "@/core/either";
 import { ResourceNotFoundError } from "@/core/errors/resource-not-found-error";
 import { DeliverymanRepository } from "@/domain/delivery/application/repositories/deliveryman-repository";
 import { Cpf } from "@/domain/delivery/enterprise/entities/value-objects/cpf";
+import { Email } from "../../enterprise/entities/value-objects/email";
 import { InvalidCpfError } from "./errors/invalid-cpf-error";
 
 interface EditDeliverymanRequest {
   id: string;
   name: string;
-  email: string;
+  email: Email;
   cpf: string;
   latitude: number;
   longitude: number;

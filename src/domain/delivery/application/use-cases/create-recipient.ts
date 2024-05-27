@@ -1,8 +1,11 @@
 import { Either, right } from "@/core/either";
 import { RecipientRepository } from "@/domain/delivery/application/repositories/recipient-repository";
 import { Recipient } from "@/domain/delivery/enterprise/entities/recipient";
+import { Email } from "../../enterprise/entities/value-objects/email";
 
 interface CreateRecipientRequest {
+  name: string;
+  email: Email;
   cep: string;
   street: string;
   number: number;

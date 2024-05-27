@@ -1,7 +1,10 @@
 import { Entity } from "@/core/entities/entity";
 import { UniqueEntityID } from "@/core/entities/value-objects/unique-entity-id";
+import { Email } from "./value-objects/email";
 
 export interface RecipientProps {
+  name: string;
+  email: Email;
   cep: string;
   street: string;
   number: number;
@@ -14,6 +17,14 @@ export interface RecipientProps {
 }
 
 export class Recipient extends Entity<RecipientProps> {
+  get name() {
+    return this.props.name;
+  }
+
+  get email() {
+    return this.props.email;
+  }
+
   get cep() {
     return this.props.cep;
   }

@@ -1,10 +1,11 @@
 import { Entity } from "@/core/entities/entity";
 import { UniqueEntityID } from "@/core/entities/value-objects/unique-entity-id";
 import { Cpf } from "@/domain/delivery/enterprise/entities/value-objects/cpf";
+import { Email } from "./value-objects/email";
 
 export interface DeliverymanProps {
   name: string;
-  email: string;
+  email: Email;
   password: string;
   latitude: number;
   longitude: number;
@@ -24,7 +25,7 @@ export class Deliveryman extends Entity<DeliverymanProps> {
     return this.props.email;
   }
 
-  set email(email: string) {
+  set email(email: Email) {
     this.props.email = email;
   }
 
