@@ -11,7 +11,7 @@ export class Email {
     return new Email(email);
   }
 
-  private static validate(email: string): boolean {
+  static validate(email: string): boolean {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   }

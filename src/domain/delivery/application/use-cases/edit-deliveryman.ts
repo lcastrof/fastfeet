@@ -4,11 +4,12 @@ import { DeliverymanRepository } from "@/domain/delivery/application/repositorie
 import { Cpf } from "@/domain/delivery/enterprise/entities/value-objects/cpf";
 import { Email } from "../../enterprise/entities/value-objects/email";
 import { InvalidCpfError } from "./errors/invalid-cpf-error";
+import { InvalidEmailError } from "./errors/invalid-email-error";
 
 interface EditDeliverymanRequest {
   id: string;
   name: string;
-  email: Email;
+  email: string;
   cpf: string;
   latitude: number;
   longitude: number;
@@ -36,13 +37,17 @@ export class EditDeliverymanUseCase {
       return left(new ResourceNotFoundError());
     }
 
+    if (!Email.validate(email)) {
+      return left(new InvalidEmailError());
+    }
+
     if (!Cpf.validate(cpf)) {
       return left(new InvalidCpfError());
     }
 
     deliveryman.name = name;
-    deliveryman.email = email;
-    deliveryman.cpf = new Cpf(cpf);
+    deliveryman.email = Email.create(email);
+    deliveryman.cpf = Cpf.create(cpf);
     deliveryman.latitude = latitude;
     deliveryman.longitude = longitude;
 

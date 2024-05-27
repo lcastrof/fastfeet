@@ -2,8 +2,8 @@ import { ResourceNotFoundError } from "@/core/errors/resource-not-found-error";
 import { makeDeliveryman } from "test/factories/make-deliveryman";
 import { InMemoryDeliverymanRepository } from "test/repositories/in-memory-deliveryman-repository";
 import { Cpf } from "../../enterprise/entities/value-objects/cpf";
-import { Email } from "../../enterprise/entities/value-objects/email";
 import { EditDeliverymanUseCase } from "./edit-deliveryman";
+import { Email } from "../../enterprise/entities/value-objects/email";
 
 let inMemoryDeliverymanRepository: InMemoryDeliverymanRepository;
 let sut: EditDeliverymanUseCase;
@@ -23,7 +23,7 @@ describe("Edit Deliveryman", () => {
     const editedDeliveryman = {
       id: deliveryman.id.toString(),
       name: "John Doe",
-      email: Email.create("john@doe.com"),
+      email: "john@doe.com",
       cpf: "12345678909",
       latitude: 0,
       longitude: 0,
@@ -36,8 +36,8 @@ describe("Edit Deliveryman", () => {
     expect(inMemoryDeliverymanRepository.deliverymen[0]).toMatchObject(
       expect.objectContaining({
         name: editedDeliveryman.name,
-        email: editedDeliveryman.email,
-        cpf: new Cpf(editedDeliveryman.cpf),
+        email: Email.create(editedDeliveryman.email),
+        cpf: Cpf.create(editedDeliveryman.cpf),
         latitude: editedDeliveryman.latitude,
         longitude: editedDeliveryman.longitude,
       }),
@@ -54,7 +54,7 @@ describe("Edit Deliveryman", () => {
     const result = await sut.execute({
       id: "2",
       name: "John Doe",
-      email: Email.create("john@doe.com"),
+      email: "john@doe.com",
       cpf: "12345678909",
       latitude: 0,
       longitude: 0,

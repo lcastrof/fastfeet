@@ -9,6 +9,10 @@ export class Cpf {
     this.value = value;
   }
 
+  static create(cpf: string): Cpf {
+    return new Cpf(cpf);
+  }
+
   static validate(cpf: string): boolean {
     cpf = cpf.replace(/[^\d]+/g, "");
 

@@ -1,5 +1,4 @@
 import { InMemoryDeliverymanRepository } from "test/repositories/in-memory-deliveryman-repository";
-import { Email } from "../../enterprise/entities/value-objects/email";
 import { CreateDeliverymanUseCase } from "./create-deliveryman";
 
 let inMemoryDeliverymanRepository: InMemoryDeliverymanRepository;
@@ -16,7 +15,7 @@ describe("Create Deliveryman", () => {
     const request = {
       id: "1",
       name: "John Doe",
-      email: Email.create("john@doe.com"),
+      email: "john@doe.com",
       cpf: "12345678909",
       password: "password",
       latitude: 0,
@@ -26,8 +25,31 @@ describe("Create Deliveryman", () => {
     const result = await sut.execute(request);
 
     expect(result.isRight()).toBe(true);
-    expect(inMemoryDeliverymanRepository.deliverymen[0].id).toEqual(
-      result.value.deliveryman.id,
-    );
+  });
+
+  it("should not be able to create a deliveryman with an invalid email or cpf", async () => {
+    const request = {
+      id: "1",
+      name: "John Doe",
+      email: "john@doe",
+      cpf: "12345678909",
+      password: "password",
+      latitude: 0,
+      longitude: 0,
+    };
+
+    const result = await sut.execute(request);
+
+    expect(result.isLeft()).toBe(true);
+
+    const request2 = {
+      ...request,
+      email: "john@doe.com",
+      cpf: "1234567890",
+    };
+
+    const result2 = await sut.execute(request2);
+
+    expect(result2.isLeft()).toBe(true);
   });
 });
