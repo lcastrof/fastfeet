@@ -1,10 +1,10 @@
 import { UniqueEntityID } from "@/core/entities/value-objects/unique-entity-id";
-import { Status } from "@/core/enums/status";
+import { StatusEnum } from "@/core/enums/status";
 import {
   Delivery,
   DeliveryProps,
 } from "@/domain/delivery/enterprise/entities/delivery";
-import { DeliveryStatus } from "@/domain/delivery/enterprise/entities/delivery-status";
+import { Status } from "@/domain/delivery/enterprise/entities/value-objects/status";
 
 export function makeDelivery(
   override: Partial<DeliveryProps> = {},
@@ -12,7 +12,7 @@ export function makeDelivery(
 ) {
   const delivery = Delivery.create(
     {
-      status: DeliveryStatus.create({ title: Status.NOT_STARTED }),
+      status: Status.create(StatusEnum.NOT_STARTED),
       deliverymanId: new UniqueEntityID(),
       recipientId: new UniqueEntityID(),
       ...override,

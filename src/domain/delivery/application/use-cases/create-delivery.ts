@@ -1,8 +1,9 @@
 import { Either, right } from "@/core/either";
 import { UniqueEntityID } from "@/core/entities/value-objects/unique-entity-id";
+import { StatusEnum } from "@/core/enums/status";
 import { DeliveryRepository } from "@/domain/delivery/application/repositories/delivery-repository";
 import { Delivery } from "@/domain/delivery/enterprise/entities/delivery";
-import { DeliveryStatus } from "../../enterprise/entities/delivery-status";
+import { Status } from "../../enterprise/entities/value-objects/status";
 
 interface CreateDeliveryRequest {
   recipientId: string;
@@ -18,7 +19,7 @@ export class CreateDeliveryUseCase {
   }: CreateDeliveryRequest): Promise<CreateDeliveryResponse> {
     const delivery = Delivery.create({
       recipientId: new UniqueEntityID(recipientId),
-      status: DeliveryStatus.create({ title: "test" }),
+      status: Status.create(StatusEnum.NOT_STARTED),
     });
     await this.deliveryRepository.create(delivery);
 

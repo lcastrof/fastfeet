@@ -1,14 +1,14 @@
-import { Status } from "@/core/enums/status";
+import { StatusEnum } from "@/core/enums/status";
+import { ResourceNotFoundError } from "@/core/errors/resource-not-found-error";
 import { makeDelivery } from "test/factories/make-delivery";
-import { makeDeliveryStatus } from "test/factories/make-delivery-status";
 import { InMemoryAttachmentRepository } from "test/repositories/in-memory-attachment-repository";
 import { InMemoryDeliveryRepository } from "test/repositories/in-memory-delivery-repository";
-import { InMemoryDeliveryStatusRepository } from "test/repositories/in-memory-delivery-status-repository";
+import { Status } from "../../enterprise/entities/value-objects/status";
 import { ChangeDeliveryStatusUseCase } from "./change-delivery-status";
+import { InvalidStatusError } from "./errors/invalid-status-error";
 
 let inMemoryDeliveryRepository: InMemoryDeliveryRepository;
 let inMemoryAttachmentRepository: InMemoryAttachmentRepository;
-let inMemoryDeliveryStatusRepository: InMemoryDeliveryStatusRepository;
 let sut: ChangeDeliveryStatusUseCase;
 
 describe("Change Delivery Status", () => {
@@ -17,11 +17,7 @@ describe("Change Delivery Status", () => {
     inMemoryDeliveryRepository = new InMemoryDeliveryRepository(
       inMemoryAttachmentRepository,
     );
-    inMemoryDeliveryStatusRepository = new InMemoryDeliveryStatusRepository();
-    sut = new ChangeDeliveryStatusUseCase(
-      inMemoryDeliveryStatusRepository,
-      inMemoryDeliveryRepository,
-    );
+    sut = new ChangeDeliveryStatusUseCase(inMemoryDeliveryRepository);
   });
 
   it("should be able to change the delivery status", async () => {
@@ -30,24 +26,20 @@ describe("Change Delivery Status", () => {
     await inMemoryDeliveryRepository.create(delivery);
 
     expect(inMemoryDeliveryRepository.deliveries).toHaveLength(1);
-    expect(delivery.status.title).toEqual(Status.NOT_STARTED);
+    expect(delivery.status.value).toEqual(StatusEnum.NOT_STARTED);
     expect(delivery.domainEvents).toHaveLength(0);
-    expect(inMemoryDeliveryStatusRepository.deliveryStatuses).toHaveLength(0);
 
-    const newStatus = makeDeliveryStatus({ title: Status.IN_DELIVERY });
-
-    await inMemoryDeliveryStatusRepository.create(newStatus);
+    const newStatus = Status.create(StatusEnum.IN_DELIVERY);
 
     const result = await sut.execute({
       deliveryId: delivery.id.toString(),
-      deliveryStatusId: newStatus.id.toString(),
+      status: newStatus.value,
     });
 
     expect(result.isRight()).toBe(true);
-    expect(inMemoryDeliveryRepository.deliveries[0].status.title).toEqual(
-      Status.IN_DELIVERY,
+    expect(inMemoryDeliveryRepository.deliveries[0].status.value).toEqual(
+      StatusEnum.IN_DELIVERY,
     );
-    expect(inMemoryDeliveryStatusRepository.deliveryStatuses).toHaveLength(1);
   });
 
   it("should not be able to change the delivery status if the delivery does not exist", async () => {
@@ -57,16 +49,15 @@ describe("Change Delivery Status", () => {
 
     expect(inMemoryDeliveryRepository.deliveries).toHaveLength(1);
 
-    const newStatus = makeDeliveryStatus({ title: Status.IN_DELIVERY });
-
-    await inMemoryDeliveryStatusRepository.create(newStatus);
+    const newStatus = Status.create(StatusEnum.IN_DELIVERY);
 
     const result = await sut.execute({
       deliveryId: "2",
-      deliveryStatusId: newStatus.id.toString(),
+      status: newStatus.value,
     });
 
     expect(result.isLeft()).toBe(true);
+    expect(result.value).toBeInstanceOf(ResourceNotFoundError);
   });
 
   it("should not be able to change the delivery status if the delivery status does not exist", async () => {
@@ -76,15 +67,12 @@ describe("Change Delivery Status", () => {
 
     expect(inMemoryDeliveryRepository.deliveries).toHaveLength(1);
 
-    const newStatus = makeDeliveryStatus({ title: Status.IN_DELIVERY });
-
-    await inMemoryDeliveryStatusRepository.create(newStatus);
-
     const result = await sut.execute({
       deliveryId: delivery.id.toString(),
-      deliveryStatusId: "2",
+      status: "INVALID_STATUS",
     });
 
     expect(result.isLeft()).toBe(true);
+    expect(result.value).toBeInstanceOf(InvalidStatusError);
   });
 });

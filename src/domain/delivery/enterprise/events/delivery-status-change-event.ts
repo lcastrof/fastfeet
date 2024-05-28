@@ -1,7 +1,7 @@
 import { UniqueEntityID } from "@/core/entities/value-objects/unique-entity-id";
 import { DomainEvent } from "@/core/events/domain-event";
 import { Delivery } from "../entities/delivery";
-import { DeliveryStatus } from "../entities/delivery-status";
+import { DeliveryStatus } from "../entities/value-objects/status";
 
 interface DeliveryStatusChangeEventProps {
   status: DeliveryStatus;

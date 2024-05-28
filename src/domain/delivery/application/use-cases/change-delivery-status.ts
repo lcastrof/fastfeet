@@ -1,30 +1,25 @@
 import { Either, left, right } from "@/core/either";
 import { ResourceNotFoundError } from "@/core/errors/resource-not-found-error";
+import { Status } from "../../enterprise/entities/value-objects/status";
 import { DeliveryRepository } from "../repositories/delivery-repository";
-import { DeliveryStatusRepository } from "../repositories/delivery-status-repository";
+import { InvalidStatusError } from "./errors/invalid-status-error";
 
 interface ChangeDeliveryStatusRequest {
   deliveryId: string;
-  deliveryStatusId: string;
+  status: string;
 }
 
 type ChangeDeliveryStatusResponse = Either<ResourceNotFoundError, void>;
 
 export class ChangeDeliveryStatusUseCase {
-  constructor(
-    private readonly deliveryStatusRepository: DeliveryStatusRepository,
-    private readonly deliveryRepository: DeliveryRepository,
-  ) {}
+  constructor(private readonly deliveryRepository: DeliveryRepository) {}
 
   async execute({
     deliveryId,
-    deliveryStatusId,
+    status,
   }: ChangeDeliveryStatusRequest): Promise<ChangeDeliveryStatusResponse> {
-    const deliveryStatus =
-      await this.deliveryStatusRepository.findById(deliveryStatusId);
-
-    if (!deliveryStatus) {
-      return left(new ResourceNotFoundError());
+    if (!Status.validate(status)) {
+      return left(new InvalidStatusError());
     }
 
     const delivery = await this.deliveryRepository.findById(deliveryId);
@@ -33,7 +28,7 @@ export class ChangeDeliveryStatusUseCase {
       return left(new ResourceNotFoundError());
     }
 
-    delivery.status = deliveryStatus;
+    delivery.status = Status.create(status);
 
     await this.deliveryRepository.save(delivery);
 

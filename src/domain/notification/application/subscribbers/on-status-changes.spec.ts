@@ -1,6 +1,6 @@
-import { Status } from "@/core/enums/status";
+import { StatusEnum } from "@/core/enums/status";
+import { Status } from "@/domain/delivery/enterprise/entities/value-objects/status";
 import { makeDelivery } from "test/factories/make-delivery";
-import { makeDeliveryStatus } from "test/factories/make-delivery-status";
 import { makeRecipient } from "test/factories/make-recipient";
 import { InMemoryAttachmentRepository } from "test/repositories/in-memory-attachment-repository";
 import { InMemoryDeliveryRepository } from "test/repositories/in-memory-delivery-repository";
@@ -46,9 +46,7 @@ describe("On status changes", () => {
     });
     await inMemoryDeliveryRepository.create(delivery);
 
-    const deliveryStatus = makeDeliveryStatus({
-      title: Status.IN_DELIVERY,
-    });
+    const deliveryStatus = Status.create(StatusEnum.IN_DELIVERY);
     delivery.status = deliveryStatus;
 
     expect(sendNotificationExecuteSpy).not.toHaveBeenCalled();
