@@ -4,6 +4,7 @@ import {
   DeliverymanProps,
 } from "@/domain/delivery/enterprise/entities/deliveryman";
 import { Cpf } from "@/domain/delivery/enterprise/entities/value-objects/cpf";
+import { Email } from "@/domain/delivery/enterprise/entities/value-objects/email";
 import { faker } from "@faker-js/faker";
 import { generateValidCpf } from "test/utils/generate-valid-cpf";
 
@@ -14,7 +15,7 @@ export function makeDeliveryman(
   const deliveryman = Deliveryman.create(
     {
       name: faker.person.fullName(),
-      email: faker.internet.email(),
+      email: Email.create(faker.internet.email()),
       cpf: new Cpf(generateValidCpf()),
       password: faker.internet.password({ length: 8 }),
       latitude: faker.location.latitude(),

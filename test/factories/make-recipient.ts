@@ -3,6 +3,7 @@ import {
   Recipient,
   RecipientProps,
 } from "@/domain/delivery/enterprise/entities/recipient";
+import { Email } from "@/domain/delivery/enterprise/entities/value-objects/email";
 import { faker } from "@faker-js/faker";
 
 export function makeRecipient(
@@ -11,6 +12,8 @@ export function makeRecipient(
 ) {
   const recipient = Recipient.create(
     {
+      name: faker.person.fullName(),
+      email: Email.create(faker.internet.email()),
       cep: faker.location.zipCode(),
       street: faker.location.street(),
       number: faker.number.int(),

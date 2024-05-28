@@ -38,7 +38,7 @@ export class OnStatusChange implements EventHandler {
     await this.sendNotificationUseCase.execute({
       recipientId: recipient.id.toString(),
       title: `Your delivery "${delivery.id}" status just changed!`,
-      content: `Your delivery status is now ${status.title}`,
+      content: `Your delivery status is now ${status.value}`,
     });
   }
 }

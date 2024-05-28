@@ -1,16 +1,16 @@
 import { UniqueEntityID } from "@/core/entities/value-objects/unique-entity-id";
 import { DomainEvent } from "@/core/events/domain-event";
 import { Delivery } from "../entities/delivery";
-import { DeliveryStatus } from "../entities/value-objects/status";
+import { Status } from "../entities/value-objects/status";
 
 interface DeliveryStatusChangeEventProps {
-  status: DeliveryStatus;
+  status: Status;
   delivery: Delivery;
 }
 
 export class DeliveryStatusChangeEvent implements DomainEvent {
   ocurredAt: Date;
-  public status: DeliveryStatus;
+  public status: Status;
   public delivery: Delivery;
 
   constructor({ status, delivery }: DeliveryStatusChangeEventProps) {
@@ -20,6 +20,6 @@ export class DeliveryStatusChangeEvent implements DomainEvent {
   }
 
   getAggregateId(): UniqueEntityID {
-    return this.status.id;
+    return this.delivery.id;
   }
 }
