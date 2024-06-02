@@ -1,6 +1,6 @@
 export class Email {
-  private constructor(private readonly email: string) {
-    Object.freeze(this);
+  private constructor(public value: string) {
+    this.value = value;
   }
 
   static create(email: string): Email {
