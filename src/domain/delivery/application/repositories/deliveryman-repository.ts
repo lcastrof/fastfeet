@@ -1,8 +1,10 @@
 import { Deliveryman } from "@/domain/delivery/enterprise/entities/deliveryman";
 
-export interface DeliverymanRepository {
-  findById(id: string): Promise<Deliveryman> | null;
-  create(deliveryman: Deliveryman): Promise<void>;
-  save(deliveryman: Deliveryman): Promise<void>;
-  delete(id: string): Promise<void>;
+export abstract class DeliverymanRepository {
+  abstract findById(id: string | number): Promise<Deliveryman | null>;
+  abstract findByEmail(email: string): Promise<Deliveryman | null>;
+  abstract findByCpf(cpf: string): Promise<Deliveryman | null>;
+  abstract createDeliveryman(deliveryman: Deliveryman): Promise<void>;
+  abstract saveDeliveryman(deliveryman: Deliveryman): Promise<void>;
+  abstract deleteDeliveryman(id: string | number): Promise<void>;
 }
