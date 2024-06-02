@@ -14,7 +14,7 @@ describe("Get Deliveryman By Id", () => {
   it("should be able to get a deliveryman by id", async () => {
     const mockedDeliveryman = makeDeliveryman();
 
-    await inMemoryDeliverymanRepository.create(mockedDeliveryman);
+    await inMemoryDeliverymanRepository.createDeliveryman(mockedDeliveryman);
 
     const result = await sut.execute({
       id: mockedDeliveryman.id.toString(),

@@ -20,6 +20,6 @@ export class DeleteDeliverymanUseCase {
       return left(new ResourceNotFoundError());
     }
 
-    await this.deliverymanRepository.delete(id);
+    await this.deliverymanRepository.deleteDeliveryman(id);
   }
 }

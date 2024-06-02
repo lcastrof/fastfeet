@@ -14,7 +14,7 @@ describe("Delete Deliveryman", () => {
   it("should be able to delete a deliveryman", async () => {
     const deliveryman = makeDeliveryman();
 
-    await inMemoryDeliverymanRepository.create(deliveryman);
+    await inMemoryDeliverymanRepository.createDeliveryman(deliveryman);
 
     expect(inMemoryDeliverymanRepository.deliverymen).toHaveLength(1);
 
@@ -28,7 +28,7 @@ describe("Delete Deliveryman", () => {
   it("should not be able to delete a deliveryman that does not exist", async () => {
     const deliveryman = makeDeliveryman();
 
-    await inMemoryDeliverymanRepository.create(deliveryman);
+    await inMemoryDeliverymanRepository.createDeliveryman(deliveryman);
 
     expect(inMemoryDeliverymanRepository.deliverymen).toHaveLength(1);
 

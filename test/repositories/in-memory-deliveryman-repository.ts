@@ -4,11 +4,11 @@ import { Deliveryman } from "@/domain/delivery/enterprise/entities/deliveryman";
 export class InMemoryDeliverymanRepository implements DeliverymanRepository {
   public deliverymen: Deliveryman[] = [];
 
-  async create(deliveryman: Deliveryman): Promise<void> {
+  async createDeliveryman(deliveryman: Deliveryman): Promise<void> {
     this.deliverymen.push(deliveryman);
   }
 
-  async save(deliveryman: Deliveryman): Promise<void> {
+  async saveDeliveryman(deliveryman: Deliveryman): Promise<void> {
     const index = this.deliverymen.findIndex(
       (item) => item.id.toString() === deliveryman.id.toString(),
     );
@@ -28,9 +28,33 @@ export class InMemoryDeliverymanRepository implements DeliverymanRepository {
     return deliveryman;
   }
 
-  async delete(id: string): Promise<void> {
+  async deleteDeliveryman(id: string): Promise<void> {
     this.deliverymen = this.deliverymen.filter(
       (deliveryman) => deliveryman.id.toString() !== id,
     );
+  }
+
+  async findByEmail(email: string): Promise<Deliveryman> {
+    const deliveryman = this.deliverymen.find(
+      (deliveryman) => deliveryman.email.value === email,
+    );
+
+    if (!deliveryman) {
+      return null;
+    }
+
+    return deliveryman;
+  }
+
+  async findByCpf(cpf: string): Promise<Deliveryman> {
+    const deliveryman = this.deliverymen.find(
+      (deliveryman) => deliveryman.cpf.value === cpf,
+    );
+
+    if (!deliveryman) {
+      return null;
+    }
+
+    return deliveryman;
   }
 }

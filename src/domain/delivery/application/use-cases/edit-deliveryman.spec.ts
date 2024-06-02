@@ -2,8 +2,8 @@ import { ResourceNotFoundError } from "@/core/errors/resource-not-found-error";
 import { makeDeliveryman } from "test/factories/make-deliveryman";
 import { InMemoryDeliverymanRepository } from "test/repositories/in-memory-deliveryman-repository";
 import { Cpf } from "../../enterprise/entities/value-objects/cpf";
-import { EditDeliverymanUseCase } from "./edit-deliveryman";
 import { Email } from "../../enterprise/entities/value-objects/email";
+import { EditDeliverymanUseCase } from "./edit-deliveryman";
 
 let inMemoryDeliverymanRepository: InMemoryDeliverymanRepository;
 let sut: EditDeliverymanUseCase;
@@ -16,7 +16,7 @@ describe("Edit Deliveryman", () => {
   it("should be able to edit a deliveryman", async () => {
     const deliveryman = makeDeliveryman();
 
-    await inMemoryDeliverymanRepository.create(deliveryman);
+    await inMemoryDeliverymanRepository.createDeliveryman(deliveryman);
 
     expect(inMemoryDeliverymanRepository.deliverymen).toHaveLength(1);
 
@@ -47,7 +47,7 @@ describe("Edit Deliveryman", () => {
   it("should not be able to edit a deliveryman that does not exist", async () => {
     const deliveryman = makeDeliveryman();
 
-    await inMemoryDeliverymanRepository.create(deliveryman);
+    await inMemoryDeliverymanRepository.createDeliveryman(deliveryman);
 
     expect(inMemoryDeliverymanRepository.deliverymen).toHaveLength(1);
 

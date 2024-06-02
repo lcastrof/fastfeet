@@ -51,7 +51,7 @@ export class EditDeliverymanUseCase {
     deliveryman.latitude = latitude;
     deliveryman.longitude = longitude;
 
-    await this.deliverymanRepository.save(deliveryman);
+    await this.deliverymanRepository.saveDeliveryman(deliveryman);
 
     return right(null);
   }

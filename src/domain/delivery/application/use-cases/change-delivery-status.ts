@@ -9,7 +9,7 @@ interface ChangeDeliveryStatusRequest {
   status: string;
 }
 
-type ChangeDeliveryStatusResponse = Either<ResourceNotFoundError, void>;
+type ChangeDeliveryStatusResponse = Either<ResourceNotFoundError, null>;
 
 export class ChangeDeliveryStatusUseCase {
   constructor(private readonly deliveryRepository: DeliveryRepository) {}

@@ -2,7 +2,10 @@ import { Either, left, right } from "@/core/either";
 import { DeliverymanRepository } from "@/domain/delivery/application/repositories/deliveryman-repository";
 import { Deliveryman } from "@/domain/delivery/enterprise/entities/deliveryman";
 import { Cpf } from "@/domain/delivery/enterprise/entities/value-objects/cpf";
+import { Injectable } from "@nestjs/common";
 import { Email } from "../../enterprise/entities/value-objects/email";
+import { CPFAlreadyExistsError } from "./errors/cpf-already-exists-error";
+import { EmailAlreadyExistsError } from "./errors/email-already-exists-error";
 import { InvalidCpfError } from "./errors/invalid-cpf-error";
 import { InvalidEmailError } from "./errors/invalid-email-error";
 
@@ -16,10 +19,14 @@ interface CreateDeliverymanRequest {
 }
 
 type CreateDeliverymanResponse = Either<
-  InvalidCpfError | InvalidEmailError,
+  | InvalidCpfError
+  | InvalidEmailError
+  | EmailAlreadyExistsError
+  | CPFAlreadyExistsError,
   { deliveryman: Deliveryman }
 >;
 
+@Injectable()
 export class CreateDeliverymanUseCase {
   constructor(private readonly deliverymanRepository: DeliverymanRepository) {}
 
@@ -42,6 +49,18 @@ export class CreateDeliverymanUseCase {
       return left(new InvalidCpfError());
     }
 
+    const isEmailInUse = await this.deliverymanRepository.findByEmail(email);
+
+    if (isEmailInUse) {
+      return left(new EmailAlreadyExistsError());
+    }
+
+    const isCpfInUse = await this.deliverymanRepository.findByCpf(cpf);
+
+    if (isCpfInUse) {
+      return left(new CPFAlreadyExistsError());
+    }
+
     const deliveryman = Deliveryman.create({
       name,
       email: Email.create(email),
@@ -50,7 +69,7 @@ export class CreateDeliverymanUseCase {
       latitude,
       longitude,
     });
-    await this.deliverymanRepository.create(deliveryman);
+    await this.deliverymanRepository.createDeliveryman(deliveryman);
 
     return right({ deliveryman });
   }
