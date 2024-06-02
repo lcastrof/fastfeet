@@ -28,6 +28,12 @@ export class User {
   @Column({ name: "password_hashed" })
   passwordHashed: string;
 
+  @Column()
+  latitude: number;
+
+  @Column()
+  longitude: number;
+
   @ManyToMany(() => Permission, {
     cascade: true,
   })
