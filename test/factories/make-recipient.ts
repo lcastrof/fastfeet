@@ -14,7 +14,7 @@ export function makeRecipient(
     {
       name: faker.person.fullName(),
       email: Email.create(faker.internet.email()),
-      cep: faker.location.zipCode(),
+      zipCode: faker.location.zipCode(),
       street: faker.location.street(),
       number: faker.number.int(),
       neighborhood: faker.location.county(),

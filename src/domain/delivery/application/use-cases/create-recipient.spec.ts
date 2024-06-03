@@ -15,7 +15,7 @@ describe("Create Recipient", () => {
     const request = {
       name: "Name",
       email: Email.create("john@doe.com"),
-      cep: "12345678",
+      zipCode: "12345678",
       city: "City",
       complement: "Complement",
       latitude: 123,

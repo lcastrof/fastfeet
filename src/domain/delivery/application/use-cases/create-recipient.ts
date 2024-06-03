@@ -6,7 +6,7 @@ import { Email } from "../../enterprise/entities/value-objects/email";
 interface CreateRecipientRequest {
   name: string;
   email: Email;
-  cep: string;
+  zipCode: string;
   street: string;
   number: number;
   neighborhood: string;

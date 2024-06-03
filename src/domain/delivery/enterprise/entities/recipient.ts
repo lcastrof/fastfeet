@@ -5,7 +5,7 @@ import { Email } from "./value-objects/email";
 export interface RecipientProps {
   name: string;
   email: Email;
-  cep: string;
+  zipCode: string;
   street: string;
   number: number;
   neighborhood: string;
@@ -25,8 +25,8 @@ export class Recipient extends Entity<RecipientProps> {
     return this.props.email;
   }
 
-  get cep() {
-    return this.props.cep;
+  get zipCode() {
+    return this.props.zipCode;
   }
 
   get street() {
