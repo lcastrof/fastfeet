@@ -46,7 +46,7 @@ describe("On status changes", () => {
     });
     await inMemoryDeliveryRepository.create(delivery);
 
-    const deliveryStatus = Status.create(StatusEnum.IN_DELIVERY);
+    const deliveryStatus = Status.create(StatusEnum.WITHDRAWN);
     delivery.status = deliveryStatus;
 
     expect(sendNotificationExecuteSpy).not.toHaveBeenCalled();

@@ -29,7 +29,7 @@ describe("Change Delivery Status", () => {
     expect(delivery.status.value).toEqual(StatusEnum.NOT_STARTED);
     expect(delivery.domainEvents).toHaveLength(0);
 
-    const newStatus = Status.create(StatusEnum.IN_DELIVERY);
+    const newStatus = Status.create(StatusEnum.WITHDRAWN);
 
     const result = await sut.execute({
       deliveryId: delivery.id.toString(),
@@ -38,7 +38,7 @@ describe("Change Delivery Status", () => {
 
     expect(result.isRight()).toBe(true);
     expect(inMemoryDeliveryRepository.deliveries[0].status.value).toEqual(
-      StatusEnum.IN_DELIVERY,
+      StatusEnum.WITHDRAWN,
     );
   });
 
@@ -49,7 +49,7 @@ describe("Change Delivery Status", () => {
 
     expect(inMemoryDeliveryRepository.deliveries).toHaveLength(1);
 
-    const newStatus = Status.create(StatusEnum.IN_DELIVERY);
+    const newStatus = Status.create(StatusEnum.WITHDRAWN);
 
     const result = await sut.execute({
       deliveryId: "2",
