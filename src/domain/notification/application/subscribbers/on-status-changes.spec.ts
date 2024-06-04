@@ -39,19 +39,19 @@ describe("On status changes", () => {
   it("should send a notification when the delivery status changes", async () => {
     const recipient = makeRecipient();
 
-    await inMemoryRecipientRepository.create(recipient);
+    await inMemoryRecipientRepository.createRecipient(recipient);
 
     const delivery = makeDelivery({
       recipientId: recipient.id,
     });
-    await inMemoryDeliveryRepository.create(delivery);
+    await inMemoryDeliveryRepository.createDelivery(delivery);
 
     const deliveryStatus = Status.create(StatusEnum.WITHDRAWN);
     delivery.status = deliveryStatus;
 
     expect(sendNotificationExecuteSpy).not.toHaveBeenCalled();
 
-    await inMemoryDeliveryRepository.save(delivery);
+    await inMemoryDeliveryRepository.saveDelivery(delivery);
 
     expect(sendNotificationExecuteSpy).toHaveBeenCalledTimes(1);
   });

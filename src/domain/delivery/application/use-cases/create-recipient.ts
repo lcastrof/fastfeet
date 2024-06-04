@@ -28,7 +28,7 @@ export class CreateRecipientUseCase {
     const recipient = Recipient.create({
       ...data,
     });
-    await this.recipientRepository.create(recipient);
+    await this.recipientRepository.createRecipient(recipient);
 
     return right({ recipient });
   }

@@ -21,7 +21,7 @@ export class CreateDeliveryUseCase {
       recipientId: new UniqueEntityID(recipientId),
       status: Status.create(StatusEnum.NOT_STARTED),
     });
-    await this.deliveryRepository.create(delivery);
+    await this.deliveryRepository.createDelivery(delivery);
 
     return right({ delivery });
   }

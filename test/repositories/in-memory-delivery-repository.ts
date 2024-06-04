@@ -47,11 +47,11 @@ export class InMemoryDeliveryRepository implements DeliveryRepository {
     };
   }
 
-  async create(delivery: Delivery): Promise<void> {
+  async createDelivery(delivery: Delivery): Promise<void> {
     this.deliveries.push(delivery);
   }
 
-  async save(delivery: Delivery): Promise<void> {
+  async saveDelivery(delivery: Delivery): Promise<void> {
     const oldDeliveryIndex = this.deliveries.findIndex(
       (item) => item.id.toString() === delivery.id.toString(),
     );
@@ -61,7 +61,7 @@ export class InMemoryDeliveryRepository implements DeliveryRepository {
     this.deliveries[oldDeliveryIndex] = delivery;
   }
 
-  async delete(id: string): Promise<void> {
+  async deleteDelivery(id: string): Promise<void> {
     this.deliveries = this.deliveries.filter(
       (delivery) => delivery.id.toString() !== id,
     );

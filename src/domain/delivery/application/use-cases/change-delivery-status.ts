@@ -30,7 +30,7 @@ export class ChangeDeliveryStatusUseCase {
 
     delivery.status = Status.create(status);
 
-    await this.deliveryRepository.save(delivery);
+    await this.deliveryRepository.saveDelivery(delivery);
 
     return right(null);
   }

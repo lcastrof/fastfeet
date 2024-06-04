@@ -20,7 +20,7 @@ describe("Delete Delivery", () => {
   it("should be able to delete a delivery", async () => {
     const delivery = makeDelivery();
 
-    await inMemoryDeliveryRepository.create(delivery);
+    await inMemoryDeliveryRepository.createDelivery(delivery);
 
     expect(inMemoryDeliveryRepository.deliveries).toHaveLength(1);
 
@@ -34,7 +34,7 @@ describe("Delete Delivery", () => {
   it("should not be able to delete a delivery that does not exist", async () => {
     const delivery = makeDelivery();
 
-    await inMemoryDeliveryRepository.create(delivery);
+    await inMemoryDeliveryRepository.createDelivery(delivery);
 
     expect(inMemoryDeliveryRepository.deliveries).toHaveLength(1);
 
@@ -50,7 +50,7 @@ describe("Delete Delivery", () => {
   it("should delete the attachment(when it have one) when deleting a delivery", async () => {
     const delivery = makeDelivery();
 
-    await inMemoryDeliveryRepository.create(delivery);
+    await inMemoryDeliveryRepository.createDelivery(delivery);
 
     expect(inMemoryDeliveryRepository.deliveries).toHaveLength(1);
 
@@ -60,7 +60,7 @@ describe("Delete Delivery", () => {
       title: "Title",
     });
 
-    await inMemoryAttachmentRepository.create(attachment);
+    await inMemoryAttachmentRepository.createAttachment(attachment);
 
     expect(inMemoryAttachmentRepository.attachments).toHaveLength(1);
 

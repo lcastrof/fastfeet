@@ -20,6 +20,6 @@ export class DeleteDeliveryUseCase {
       return left(new ResourceNotFoundError());
     }
 
-    await this.deliveryRepository.delete(id);
+    await this.deliveryRepository.deleteDelivery(id);
   }
 }

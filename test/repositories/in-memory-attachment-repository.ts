@@ -15,7 +15,7 @@ export class InMemoryAttachmentRepository implements AttachmentRepository {
 
     return attachment;
   }
-  async create(attachment: Attachment): Promise<void> {
+  async createAttachment(attachment: Attachment): Promise<void> {
     this.attachments.push(attachment);
   }
   async deleteByDeliveryId(deliveryId: string): Promise<void> {

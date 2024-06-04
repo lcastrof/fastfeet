@@ -1,8 +1,8 @@
 import { makeDelivery } from "test/factories/make-delivery";
 import { makeDeliveryman } from "test/factories/make-deliveryman";
+import { InMemoryAttachmentRepository } from "test/repositories/in-memory-attachment-repository";
 import { InMemoryDeliveryRepository } from "test/repositories/in-memory-delivery-repository";
 import { ListDeliveriesByDeliverymanUseCase } from "./list-deliveries-by-deliveryman";
-import { InMemoryAttachmentRepository } from "test/repositories/in-memory-attachment-repository";
 
 let inMemoryDeliveryRepository: InMemoryDeliveryRepository;
 let inMemoryAttachmentRepository: InMemoryAttachmentRepository;
@@ -27,7 +27,7 @@ describe("Find deliveries by deliveryman", () => {
     ];
 
     mockedDeliveries.forEach(async (delivery) => {
-      await inMemoryDeliveryRepository.create(delivery);
+      await inMemoryDeliveryRepository.createDelivery(delivery);
     });
 
     const result = await sut.execute({
@@ -51,7 +51,7 @@ describe("Find deliveries by deliveryman", () => {
     ];
 
     mockedDeliveries.forEach(async (delivery) => {
-      await inMemoryDeliveryRepository.create(delivery);
+      await inMemoryDeliveryRepository.createDelivery(delivery);
     });
 
     const result = await sut.execute({

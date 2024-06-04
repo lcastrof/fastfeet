@@ -4,13 +4,13 @@ import {
 } from "@/core/repositories/pagination";
 import { Delivery } from "@/domain/delivery/enterprise/entities/delivery";
 
-export interface DeliveryRepository {
-  findById(id: string): Promise<Delivery> | null;
-  findManyByDeliverymanId(
+export abstract class DeliveryRepository {
+  abstract findById(id: string): Promise<Delivery> | null;
+  abstract findManyByDeliverymanId(
     deliverymanId: string,
     params: PaginationParams,
   ): Promise<PaginatedResponse<Delivery>>;
-  create(delivery: Delivery): Promise<void>;
-  save(delivery: Delivery): Promise<void>;
-  delete(id: string): Promise<void>;
+  abstract createDelivery(delivery: Delivery): Promise<void>;
+  abstract saveDelivery(delivery: Delivery): Promise<void>;
+  abstract deleteDelivery(id: string): Promise<void>;
 }

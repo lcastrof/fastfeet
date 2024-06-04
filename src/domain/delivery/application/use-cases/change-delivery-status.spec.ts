@@ -23,7 +23,7 @@ describe("Change Delivery Status", () => {
   it("should be able to change the delivery status", async () => {
     const delivery = makeDelivery();
 
-    await inMemoryDeliveryRepository.create(delivery);
+    await inMemoryDeliveryRepository.createDelivery(delivery);
 
     expect(inMemoryDeliveryRepository.deliveries).toHaveLength(1);
     expect(delivery.status.value).toEqual(StatusEnum.NOT_STARTED);
@@ -45,7 +45,7 @@ describe("Change Delivery Status", () => {
   it("should not be able to change the delivery status if the delivery does not exist", async () => {
     const delivery = makeDelivery();
 
-    await inMemoryDeliveryRepository.create(delivery);
+    await inMemoryDeliveryRepository.createDelivery(delivery);
 
     expect(inMemoryDeliveryRepository.deliveries).toHaveLength(1);
 
@@ -63,7 +63,7 @@ describe("Change Delivery Status", () => {
   it("should not be able to change the delivery status if the delivery status does not exist", async () => {
     const delivery = makeDelivery();
 
-    await inMemoryDeliveryRepository.create(delivery);
+    await inMemoryDeliveryRepository.createDelivery(delivery);
 
     expect(inMemoryDeliveryRepository.deliveries).toHaveLength(1);
 

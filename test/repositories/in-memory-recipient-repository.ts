@@ -16,11 +16,11 @@ export class InMemoryRecipientRepository implements RecipientRepository {
     return recipient;
   }
 
-  async create(recipient) {
+  async createRecipient(recipient) {
     this.recipients.push(recipient);
   }
 
-  async save(recipient: Recipient): Promise<void> {
+  async saveRecipient(recipient: Recipient): Promise<void> {
     const index = this.recipients.findIndex(
       (item) => item.id.toString() === recipient.id.toString(),
     );
@@ -28,7 +28,7 @@ export class InMemoryRecipientRepository implements RecipientRepository {
     this.recipients[index] = recipient;
   }
 
-  async delete(id: string): Promise<void> {
+  async deleteRecipient(id: string): Promise<void> {
     this.recipients = this.recipients.filter(
       (status) => status.id.toString() !== id,
     );
