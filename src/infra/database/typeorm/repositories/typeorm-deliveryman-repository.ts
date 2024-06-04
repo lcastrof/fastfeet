@@ -37,7 +37,6 @@ export class TypeormDeliverymanRepository
 
   async findByEmail(email: string): Promise<Deliveryman | null> {
     const user = await this.findOneBy({ email });
-    console.log(user);
 
     if (!user) {
       return null;
