@@ -8,7 +8,6 @@ import {
 } from "typeorm";
 import { Permission } from "./permisison.entity";
 
-// TODO - Mover entities para pasta de infra quando criada
 @Entity("users")
 export class User {
   @PrimaryGeneratedColumn()
