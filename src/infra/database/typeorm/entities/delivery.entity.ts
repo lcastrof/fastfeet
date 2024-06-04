@@ -1,13 +1,17 @@
+import { StatusEnum } from "@/core/enums/status";
+import { Deliveryman } from "@/domain/delivery/enterprise/entities/deliveryman";
 import {
   Column,
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { Recipient } from "./recipient.entity";
 import { Attachment } from "./attachment.entity";
+import { Recipient } from "./recipient.entity";
+import { User } from "./user.entity";
 
 @Entity("deliveries")
 export class Delivery {
@@ -41,6 +45,18 @@ export class Delivery {
   })
   attachmentId: number;
 
+  @OneToMany(() => User, (user) => user.id)
+  @JoinColumn({
+    name: "deliveryman_id",
+    referencedColumnName: "id",
+  })
+  deliveryman: Deliveryman;
+
+  @Column({
+    name: "deliveryman_id",
+  })
+  deliverymanId: number;
+
   @Column({
     name: "retrieved_at",
   })
@@ -60,6 +76,9 @@ export class Delivery {
     name: "returned_at",
   })
   returnedAt: Date;
+
+  @Column()
+  status: StatusEnum;
 
   @Column({
     default: new Date(),
