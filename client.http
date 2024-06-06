@@ -1,0 +1,85 @@
+@baseUrl = http://localhost:3333
+@authToken = {{authenticate_as_admin.response.body.access_token}}
+
+###
+
+# @name authenticate_as_admin
+POST {{baseUrl}}/sessions
+Content-Type: application/json
+
+{
+  "cpf": "00000000000",
+  "password": "ehOADMta?"
+}
+
+###
+
+# @name create_deliveryman
+POST {{baseUrl}}/deliveryman
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "name": "John Doe",
+  "email": "john@doe.com",
+  "cpf": "45381909004",
+  "password": "123456",
+  "latitude": 0,
+  "longitude": 0
+}
+
+###
+
+# @name create_recipient
+POST {{baseUrl}}/recipients
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "name": "John Doe",
+  "email": "john@doe.com",
+  "street": "Rua do John",
+  "number": 123,
+  "complement": "Casa",
+  "neighborhood": "Bairro do John",
+  "state": "SP",
+  "city": "São Paulo",
+  "zipCode": "12345678",
+  "latitude": 0,
+  "longitude": 0
+}
+
+###
+
+# @name get_recipient_by_id
+GET {{baseUrl}}/recipients/1
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name edit_recipient
+PUT {{baseUrl}}/recipients/6
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "name": "John Doe",
+  "email": "john+1@doe.com",
+  "street": "Rua do John",
+  "number": 456,
+  "complement": "Casa",
+  "neighborhood": "Bairro do John",
+  "state": "RJ",
+  "city": "Rio de Janeiro",
+  "zipCode": "87654321",
+  "latitude": 0,
+  "longitude": 0
+}
+
+###
+
+# @name delete_recipient
+DELETE {{baseUrl}}/recipients/2
+Authorization: Bearer {{authToken}}
+
+###
