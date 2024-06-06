@@ -32,6 +32,22 @@ export class TypeormRecipientRepository
     return TypeormRecipientMapper.toDomain(recipient);
   }
 
+  async findByEmail(email: string): Promise<Recipient | null> {
+    const recipient = await this.findOneBy({ email });
+
+    if (!recipient) {
+      return null;
+    }
+
+    return TypeormRecipientMapper.toDomain(recipient);
+  }
+
+  async saveRecipient(Recipient: Recipient): Promise<void> {
+    const data = TypeormRecipientMapper.toPersistence(Recipient);
+
+    await this.save(data);
+  }
+
   async createRecipient(Recipient: Recipient) {
     const data = TypeormRecipientMapper.toPersistence(Recipient);
 

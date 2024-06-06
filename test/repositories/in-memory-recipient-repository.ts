@@ -16,6 +16,18 @@ export class InMemoryRecipientRepository implements RecipientRepository {
     return recipient;
   }
 
+  async findByEmail(email: string): Promise<Recipient | null> {
+    const recipient = this.recipients.find(
+      (recipient) => recipient.email.value === email,
+    );
+
+    if (!recipient) {
+      return null;
+    }
+
+    return recipient;
+  }
+
   async createRecipient(recipient) {
     this.recipients.push(recipient);
   }
