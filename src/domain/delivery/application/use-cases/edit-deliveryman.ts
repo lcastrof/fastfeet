@@ -20,7 +20,7 @@ interface EditDeliverymanRequest {
 
 type EditDeliverymanResponse = Either<
   ResourceNotFoundError | InvalidCpfError,
-  void
+  null
 >;
 
 @Injectable()

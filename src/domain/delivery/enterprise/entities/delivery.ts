@@ -7,7 +7,7 @@ import { Status } from "./value-objects/status";
 
 export interface DeliveryProps {
   recipientId: UniqueEntityID;
-  status?: Status;
+  status: Status;
   deliverymanId?: UniqueEntityID;
   attachment?: Attachment;
   postedAt?: Date;

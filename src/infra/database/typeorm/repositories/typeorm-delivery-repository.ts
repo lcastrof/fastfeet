@@ -26,7 +26,7 @@ export class TypeormDeliveryRepository
     );
   }
 
-  async findById(id: string): Promise<Delivery> {
+  async findById(id: string): Promise<Delivery | null> {
     const delivery = await this.findOneBy({ id: Number(id) });
 
     if (!delivery) {

@@ -22,7 +22,7 @@ export class TypeormRecipientRepository
     );
   }
 
-  async findById(id: string): Promise<Recipient> {
+  async findById(id: string): Promise<Recipient | null> {
     const recipient = await this.findOneBy({ id: Number(id) });
 
     if (!recipient) {

@@ -37,8 +37,10 @@ describe("Find deliveries by deliveryman", () => {
     });
 
     expect(result.isRight()).toBe(true);
-    expect(result.value.data).toHaveLength(2);
-    expect(result.value.meta.totalItems).toEqual(2);
+    if (result.isRight()) {
+      expect(result.value.data).toHaveLength(2);
+      expect(result.value.meta.totalItems).toEqual(2);
+    }
   });
 
   it("should paginate correctly", async () => {
@@ -61,8 +63,10 @@ describe("Find deliveries by deliveryman", () => {
     });
 
     expect(result.isRight()).toBe(true);
-    expect(result.value.data).toHaveLength(1);
-    expect(result.value.meta.totalItems).toEqual(3);
-    expect(result.value.meta.totalPages).toEqual(3);
+    if (result.isRight()) {
+      expect(result.value.data).toHaveLength(1);
+      expect(result.value.meta.totalItems).toEqual(3);
+      expect(result.value.meta.totalPages).toEqual(3);
+    }
   });
 });

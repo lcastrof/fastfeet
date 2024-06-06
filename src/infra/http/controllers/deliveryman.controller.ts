@@ -36,11 +36,11 @@ const createDeliverymanBodySchema = z.object({
 });
 
 const editDeliverymanBodySchema = z.object({
-  name: z.string().optional(),
-  email: z.string().email().optional(),
-  cpf: z.string().length(11).optional(),
-  latitude: z.number().optional(),
-  longitude: z.number().optional(),
+  name: z.string(),
+  email: z.string().email(),
+  cpf: z.string().length(11),
+  latitude: z.number(),
+  longitude: z.number(),
 });
 
 type CreateDeliverymanDto = z.infer<typeof createDeliverymanBodySchema>;
@@ -69,7 +69,7 @@ export class DeliverymanController {
       password: passwordHashed,
     };
 
-    const res = await this.createDeliveryman.execute(userObj as any);
+    const res = await this.createDeliveryman.execute(userObj);
 
     if (res.isLeft()) {
       if (res.value instanceof InvalidCpfError) {
@@ -135,7 +135,7 @@ export class DeliverymanController {
   ) {
     const res = await this.editDeliveryman.execute({
       id,
-      ...(deliveryman as any),
+      ...deliveryman,
     });
 
     if (res.isLeft()) {

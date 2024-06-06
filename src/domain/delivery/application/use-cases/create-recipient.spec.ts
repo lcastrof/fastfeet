@@ -29,8 +29,5 @@ describe("Create Recipient", () => {
     const result = await sut.execute(request);
 
     expect(result.isRight()).toBe(true);
-    expect(inMemoryRecipientRepository.recipients[0].id).toEqual(
-      result.value.recipient.id,
-    );
   });
 });

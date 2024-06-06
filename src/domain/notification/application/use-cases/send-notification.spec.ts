@@ -21,7 +21,7 @@ describe("Send Notification", () => {
 
     expect(result.isRight()).toBe(true);
     expect(inMemoryNotificationRepository.notifications[0].id).toEqual(
-      result.value.notification.id,
+      result.value?.notification.id,
     );
   });
 });

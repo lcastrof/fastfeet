@@ -21,8 +21,10 @@ describe("Get Deliveryman By Id", () => {
     });
 
     expect(result.isRight()).toBe(true);
-    expect(result.value.deliveryman.id.toString()).toEqual(
-      mockedDeliveryman.id.toString(),
-    );
+    if (result.isRight()) {
+      expect(result.value.deliveryman.id.toString()).toEqual(
+        mockedDeliveryman.id.toString(),
+      );
+    }
   });
 });

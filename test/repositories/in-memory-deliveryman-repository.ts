@@ -16,7 +16,7 @@ export class InMemoryDeliverymanRepository implements DeliverymanRepository {
     this.deliverymen[index] = deliveryman;
   }
 
-  async findById(id: string): Promise<Deliveryman> {
+  async findById(id: string): Promise<Deliveryman | null> {
     const deliveryman = this.deliverymen.find(
       (deliveryman) => deliveryman.id.toString() === id,
     );
@@ -34,7 +34,7 @@ export class InMemoryDeliverymanRepository implements DeliverymanRepository {
     );
   }
 
-  async findByEmail(email: string): Promise<Deliveryman> {
+  async findByEmail(email: string): Promise<Deliveryman | null> {
     const deliveryman = this.deliverymen.find(
       (deliveryman) => deliveryman.email.value === email,
     );
@@ -46,7 +46,7 @@ export class InMemoryDeliverymanRepository implements DeliverymanRepository {
     return deliveryman;
   }
 
-  async findByCpf(cpf: string): Promise<Deliveryman> {
+  async findByCpf(cpf: string): Promise<Deliveryman | null> {
     const deliveryman = this.deliverymen.find(
       (deliveryman) => deliveryman.cpf.value === cpf,
     );

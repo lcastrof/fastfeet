@@ -1,6 +1,6 @@
+import { InMemoryAttachmentRepository } from "test/repositories/in-memory-attachment-repository";
 import { InMemoryDeliveryRepository } from "test/repositories/in-memory-delivery-repository";
 import { CreateDeliveryUseCase } from "./create-delivery";
-import { InMemoryAttachmentRepository } from "test/repositories/in-memory-attachment-repository";
 
 let inMemoryDeliveryRepository: InMemoryDeliveryRepository;
 let inMemoryAttachmentRepository: InMemoryAttachmentRepository;
@@ -25,7 +25,7 @@ describe("Create Delivery", () => {
 
     expect(result.isRight()).toBe(true);
     expect(inMemoryDeliveryRepository.deliveries[0].id).toEqual(
-      result.value.delivery.id,
+      result.value?.delivery.id,
     );
   });
 });

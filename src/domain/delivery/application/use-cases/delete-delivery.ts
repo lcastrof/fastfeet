@@ -1,4 +1,4 @@
-import { Either, left } from "@/core/either";
+import { Either, left, right } from "@/core/either";
 import { ResourceNotFoundError } from "@/core/errors/resource-not-found-error";
 import { DeliveryRepository } from "@/domain/delivery/application/repositories/delivery-repository";
 
@@ -6,7 +6,7 @@ interface DeleteDeliveryRequest {
   id: string;
 }
 
-type DeleteDeliveryResponse = Either<ResourceNotFoundError, void>;
+type DeleteDeliveryResponse = Either<ResourceNotFoundError, null>;
 
 export class DeleteDeliveryUseCase {
   constructor(private readonly deliveryRepository: DeliveryRepository) {}
@@ -21,5 +21,7 @@ export class DeleteDeliveryUseCase {
     }
 
     await this.deliveryRepository.deleteDelivery(id);
+
+    return right(null);
   }
 }

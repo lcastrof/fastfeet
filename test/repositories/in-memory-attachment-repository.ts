@@ -4,7 +4,7 @@ import { Attachment } from "@/domain/delivery/enterprise/entities/attachment";
 export class InMemoryAttachmentRepository implements AttachmentRepository {
   public attachments: Attachment[] = [];
 
-  async findByDeliveryId(deliveryId: string): Promise<Attachment> {
+  async findByDeliveryId(deliveryId: string): Promise<Attachment | null> {
     const attachment = this.attachments.find(
       (attachment) => attachment.deliveryId.toString() === deliveryId,
     );

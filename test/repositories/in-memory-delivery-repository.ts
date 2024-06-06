@@ -12,7 +12,7 @@ export class InMemoryDeliveryRepository implements DeliveryRepository {
 
   constructor(private attachmentRepository: InMemoryAttachmentRepository) {}
 
-  async findById(id: string): Promise<Delivery> {
+  async findById(id: string): Promise<Delivery | null> {
     const delivery = this.deliveries.find(
       (delivery) => delivery.id.toString() === id,
     );
@@ -29,7 +29,7 @@ export class InMemoryDeliveryRepository implements DeliveryRepository {
     params: PaginationParams,
   ): Promise<PaginatedResponse<Delivery>> {
     const deliveries = this.deliveries.filter(
-      (delivery) => delivery.deliverymanId.toString() === deliverymanId,
+      (delivery) => delivery.deliverymanId?.toString() === deliverymanId,
     );
 
     const paginatedDeliveries = deliveries.slice(

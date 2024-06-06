@@ -2,9 +2,9 @@ import { RecipientRepository } from "@/domain/delivery/application/repositories/
 import { Recipient } from "@/domain/delivery/enterprise/entities/recipient";
 
 export class InMemoryRecipientRepository implements RecipientRepository {
-  public recipients = [];
+  public recipients: Recipient[] = [];
 
-  async findById(id: string): Promise<Recipient> {
+  async findById(id: string): Promise<Recipient | null> {
     const recipient = this.recipients.find(
       (recipient) => recipient.id.toString() === id,
     );

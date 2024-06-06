@@ -40,7 +40,7 @@ export class RolesGuard implements CanActivate {
     return this.matchRoles(requiredRoles, userWithPermissions);
   }
 
-  private matchRoles(requiredRoles: Role[], user: User): boolean {
+  private matchRoles(requiredRoles: Role[], user: User | null): boolean {
     if (!user) {
       return false;
     }
