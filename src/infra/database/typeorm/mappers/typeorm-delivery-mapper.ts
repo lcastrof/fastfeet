@@ -12,14 +12,14 @@ export class TypeormDeliveryMapper {
         status: Status.create(raw.status),
         deliverymanId: raw.deliverymanId
           ? new UniqueEntityID(raw.deliverymanId.toString())
-          : null,
+          : undefined,
         attachment: raw.attachment
           ? Attachment.create({
               deliveryId: new UniqueEntityID(raw.id.toString()),
               link: raw.attachment.link,
               title: raw.attachment.title,
             })
-          : null,
+          : undefined,
         deliveredAt: raw.deliveredAt,
         postedAt: raw.postedAt,
         retrievedAt: raw.retrievedAt,
@@ -31,12 +31,15 @@ export class TypeormDeliveryMapper {
 
   static toPersistence(delivery: Delivery): TypeormDeliveryEntity {
     const data = new TypeormDeliveryEntity();
+    if (Number.isInteger(Number(delivery.id))) {
+      data.id = Number(delivery.id.toValue());
+    }
     data.attachmentId = delivery.attachment
       ? Number(delivery.attachment.id.toValue())
-      : null;
+      : undefined;
     data.deliverymanId = delivery.deliverymanId
       ? Number(delivery.deliverymanId.toValue())
-      : null;
+      : undefined;
     data.deliveredAt = delivery.deliveredAt;
     data.postedAt = delivery.postedAt;
     data.recipientId = Number(delivery.recipientId.toValue());

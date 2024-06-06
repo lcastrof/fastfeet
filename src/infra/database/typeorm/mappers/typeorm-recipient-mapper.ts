@@ -2,10 +2,9 @@ import { UniqueEntityID } from "@/core/entities/value-objects/unique-entity-id";
 import { Recipient } from "@/domain/delivery/enterprise/entities/recipient";
 import { Email } from "@/domain/delivery/enterprise/entities/value-objects/email";
 import { Recipient as TypeormRecipientEntity } from "../entities/recipient.entity";
-
 export class TypeormRecipientMapper {
   static toDomain(raw: TypeormRecipientEntity): Recipient {
-    return Recipient.create(
+    const recipient = Recipient.create(
       {
         name: raw.name,
         email: Email.create(raw.email),
@@ -21,6 +20,8 @@ export class TypeormRecipientMapper {
       },
       new UniqueEntityID(raw.id.toString()),
     );
+
+    return recipient;
   }
 
   static toPersistence(recipient: Recipient): TypeormRecipientEntity {
@@ -36,6 +37,14 @@ export class TypeormRecipientMapper {
     data.zipCode = recipient.zipCode;
     data.latitude = recipient.latitude;
     data.longitude = recipient.longitude;
+
+    if (Number.isInteger(Number(recipient.id))) {
+      data.id = Number(recipient.id.toValue());
+    }
+
+    if (recipient.updatedAt) {
+      data.updatedAt = recipient.updatedAt;
+    }
 
     return data;
   }
