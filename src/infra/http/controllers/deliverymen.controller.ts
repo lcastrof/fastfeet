@@ -46,9 +46,9 @@ const editDeliverymanBodySchema = z.object({
 type CreateDeliverymanDto = z.infer<typeof createDeliverymanBodySchema>;
 type EditDeliverymanDto = z.infer<typeof editDeliverymanBodySchema>;
 
-@Controller("/deliveryman")
+@Controller("/deliverymen")
 @Roles(Role.Admin)
-export class DeliverymanController {
+export class DeliverymenController {
   constructor(
     private createDeliveryman: CreateDeliverymanUseCase,
     private getDeliverymanById: GetDeliverymanByIdUseCase,
