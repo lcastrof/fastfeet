@@ -1,5 +1,6 @@
 import { ResourceNotFoundError } from "@/core/errors/resource-not-found-error";
 import { CreateDeliverymanUseCase } from "@/domain/delivery/application/use-cases/create-deliveryman";
+import { DeleteDeliverymanUseCase } from "@/domain/delivery/application/use-cases/delete-deliveryman";
 import { CPFAlreadyExistsError } from "@/domain/delivery/application/use-cases/errors/cpf-already-exists-error";
 import { EmailAlreadyExistsError } from "@/domain/delivery/application/use-cases/errors/email-already-exists-error";
 import { InvalidCpfError } from "@/domain/delivery/application/use-cases/errors/invalid-cpf-error";
@@ -12,6 +13,7 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   InternalServerErrorException,
@@ -39,6 +41,7 @@ export class DeliverymanController {
   constructor(
     private createDeliveryman: CreateDeliverymanUseCase,
     private getDeliverymanById: GetDeliverymanByIdUseCase,
+    private deleteDeliveryman: DeleteDeliverymanUseCase,
   ) {}
 
   @Post()
@@ -93,5 +96,21 @@ export class DeliverymanController {
     }
 
     return res.value;
+  }
+
+  @Delete("/:id")
+  @HttpCode(204)
+  async delete(@Param("id") id: string) {
+    const res = await this.deleteDeliveryman.execute({ id });
+
+    if (res?.isLeft()) {
+      if (res.value instanceof ResourceNotFoundError) {
+        throw new BadRequestException("Deliveryman not found");
+      }
+
+      throw new InternalServerErrorException();
+    }
+
+    return;
   }
 }
