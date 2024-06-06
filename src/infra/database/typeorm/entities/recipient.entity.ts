@@ -12,7 +12,9 @@ export class Recipient {
   @Unique(["email"])
   email: string;
 
-  @Column()
+  @Column({
+    name: "zip_code",
+  })
   zipCode: string;
 
   @Column()
@@ -41,11 +43,13 @@ export class Recipient {
 
   @Column({
     default: new Date(),
+    name: "created_at",
   })
-  created_at: Date;
+  createdAt: Date;
 
   @Column({
     default: new Date(),
+    name: "updated_at",
   })
-  updated_at: Date;
+  updatedAt: Date;
 }

@@ -43,7 +43,7 @@ export class Delivery {
   @Column({
     name: "attachment_id",
   })
-  attachmentId: number;
+  attachmentId?: number;
 
   @OneToMany(() => User, (user) => user.id)
   @JoinColumn({
@@ -55,27 +55,27 @@ export class Delivery {
   @Column({
     name: "deliveryman_id",
   })
-  deliverymanId: number;
+  deliverymanId?: number;
 
   @Column({
     name: "retrieved_at",
   })
-  retrievedAt: Date;
+  retrievedAt?: Date;
 
   @Column({
     name: "posted_at",
   })
-  postedAt: Date;
+  postedAt?: Date;
 
   @Column({
     name: "delivered_at",
   })
-  deliveredAt: Date;
+  deliveredAt?: Date;
 
   @Column({
     name: "returned_at",
   })
-  returnedAt: Date;
+  returnedAt?: Date;
 
   @Column()
   status: StatusEnum;
