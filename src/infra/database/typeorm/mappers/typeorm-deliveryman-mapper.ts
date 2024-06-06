@@ -21,6 +21,7 @@ export class TypeormDeliverymanMapper {
 
   static toPersistence(deliveryman: Deliveryman): User {
     const user = new User();
+    user.id = Number(deliveryman.id.toValue());
     user.name = deliveryman.name;
     user.email = deliveryman.email.value;
     user.passwordHashed = deliveryman.password;

@@ -1,6 +1,7 @@
 import { ResourceNotFoundError } from "@/core/errors/resource-not-found-error";
 import { CreateDeliverymanUseCase } from "@/domain/delivery/application/use-cases/create-deliveryman";
 import { DeleteDeliverymanUseCase } from "@/domain/delivery/application/use-cases/delete-deliveryman";
+import { EditDeliverymanUseCase } from "@/domain/delivery/application/use-cases/edit-deliveryman";
 import { CPFAlreadyExistsError } from "@/domain/delivery/application/use-cases/errors/cpf-already-exists-error";
 import { EmailAlreadyExistsError } from "@/domain/delivery/application/use-cases/errors/email-already-exists-error";
 import { InvalidCpfError } from "@/domain/delivery/application/use-cases/errors/invalid-cpf-error";
@@ -19,6 +20,7 @@ import {
   InternalServerErrorException,
   Param,
   Post,
+  Put,
   UsePipes,
 } from "@nestjs/common";
 import { hash } from "bcryptjs";
@@ -33,7 +35,16 @@ const createDeliverymanBodySchema = z.object({
   longitude: z.number(),
 });
 
+const editDeliverymanBodySchema = z.object({
+  name: z.string().optional(),
+  email: z.string().email().optional(),
+  cpf: z.string().length(11).optional(),
+  latitude: z.number().optional(),
+  longitude: z.number().optional(),
+});
+
 type CreateDeliverymanDto = z.infer<typeof createDeliverymanBodySchema>;
+type EditDeliverymanDto = z.infer<typeof editDeliverymanBodySchema>;
 
 @Controller("/deliveryman")
 @Roles(Role.Admin)
@@ -42,6 +53,7 @@ export class DeliverymanController {
     private createDeliveryman: CreateDeliverymanUseCase,
     private getDeliverymanById: GetDeliverymanByIdUseCase,
     private deleteDeliveryman: DeleteDeliverymanUseCase,
+    private editDeliveryman: EditDeliverymanUseCase,
   ) {}
 
   @Post()
@@ -112,5 +124,38 @@ export class DeliverymanController {
     }
 
     return;
+  }
+
+  @Put("/:id")
+  @HttpCode(200)
+  async update(
+    @Param("id") id: string,
+    @Body(new ZodValidationPipe(editDeliverymanBodySchema))
+    deliveryman: EditDeliverymanDto,
+  ) {
+    const res = await this.editDeliveryman.execute({
+      id,
+      ...(deliveryman as any),
+    });
+
+    if (res.isLeft()) {
+      if (res.value instanceof InvalidCpfError) {
+        throw new BadRequestException("Invalid CPF");
+      }
+
+      if (res.value instanceof InvalidEmailError) {
+        throw new BadRequestException("Invalid Email");
+      }
+
+      if (res.value instanceof EmailAlreadyExistsError) {
+        throw new BadRequestException("Email already in use");
+      }
+
+      if (res.value instanceof CPFAlreadyExistsError) {
+        throw new BadRequestException("CPF already in use");
+      }
+
+      throw new InternalServerErrorException();
+    }
   }
 }
