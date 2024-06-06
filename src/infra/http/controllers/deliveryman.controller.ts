@@ -1,8 +1,10 @@
+import { ResourceNotFoundError } from "@/core/errors/resource-not-found-error";
 import { CreateDeliverymanUseCase } from "@/domain/delivery/application/use-cases/create-deliveryman";
 import { CPFAlreadyExistsError } from "@/domain/delivery/application/use-cases/errors/cpf-already-exists-error";
 import { EmailAlreadyExistsError } from "@/domain/delivery/application/use-cases/errors/email-already-exists-error";
 import { InvalidCpfError } from "@/domain/delivery/application/use-cases/errors/invalid-cpf-error";
 import { InvalidEmailError } from "@/domain/delivery/application/use-cases/errors/invalid-email-error";
+import { GetDeliverymanByIdUseCase } from "@/domain/delivery/application/use-cases/get-deliveryman-by-id";
 import { Role } from "@/infra/enums/role.enum";
 import { ZodValidationPipe } from "@/infra/http/pipes/zod-validation-pipe";
 import { Roles } from "@/infra/roles/roles.decorator";
@@ -10,8 +12,10 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Get,
   HttpCode,
   InternalServerErrorException,
+  Param,
   Post,
   UsePipes,
 } from "@nestjs/common";
@@ -32,7 +36,11 @@ type CreateDeliverymanDto = z.infer<typeof createDeliverymanBodySchema>;
 @Controller("/deliveryman")
 @Roles(Role.Admin)
 export class DeliverymanController {
-  constructor(private createDeliveryman: CreateDeliverymanUseCase) {}
+  constructor(
+    private createDeliveryman: CreateDeliverymanUseCase,
+    private getDeliverymanById: GetDeliverymanByIdUseCase,
+  ) {}
+
   @Post()
   @HttpCode(201)
   @UsePipes(new ZodValidationPipe(createDeliverymanBodySchema))
@@ -63,6 +71,22 @@ export class DeliverymanController {
 
       if (res.value instanceof CPFAlreadyExistsError) {
         throw new BadRequestException("CPF already in use");
+      }
+
+      throw new InternalServerErrorException();
+    }
+
+    return res.value;
+  }
+
+  @Get("/:id")
+  @HttpCode(200)
+  async findById(@Param("id") id: string) {
+    const res = await this.getDeliverymanById.execute({ id });
+
+    if (res.isLeft()) {
+      if (res.value instanceof ResourceNotFoundError) {
+        throw new BadRequestException("Deliveryman not found");
       }
 
       throw new InternalServerErrorException();
