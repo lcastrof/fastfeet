@@ -38,7 +38,7 @@ export class Delivery {
     name: "attachment_id",
     referencedColumnName: "id",
   })
-  attachment: Attachment;
+  attachment?: Attachment;
 
   @Column({
     name: "attachment_id",

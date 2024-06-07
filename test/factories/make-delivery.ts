@@ -15,6 +15,7 @@ export function makeDelivery(
       status: Status.create(StatusEnum.NOT_STARTED),
       deliverymanId: new UniqueEntityID(),
       recipientId: new UniqueEntityID(),
+      product: "Test product",
       ...override,
     },
     id,

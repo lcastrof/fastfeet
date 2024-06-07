@@ -10,6 +10,7 @@ export class TypeormDeliveryMapper {
       {
         recipientId: new UniqueEntityID(raw.recipientId.toString()),
         status: Status.create(raw.status),
+        product: raw.product,
         deliverymanId: raw.deliverymanId
           ? new UniqueEntityID(raw.deliverymanId.toString())
           : undefined,
@@ -41,6 +42,7 @@ export class TypeormDeliveryMapper {
       ? Number(delivery.deliverymanId.toValue())
       : undefined;
     data.deliveredAt = delivery.deliveredAt;
+    data.product = delivery.product;
     data.postedAt = delivery.postedAt;
     data.recipientId = Number(delivery.recipientId.toValue());
     data.retrievedAt = delivery.retrievedAt;

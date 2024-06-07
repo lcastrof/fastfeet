@@ -8,6 +8,7 @@ import { Status } from "./value-objects/status";
 export interface DeliveryProps {
   recipientId: UniqueEntityID;
   status: Status;
+  product: string;
   deliverymanId?: UniqueEntityID;
   attachment?: Attachment;
   postedAt?: Date;
@@ -47,6 +48,10 @@ export class Delivery extends AggregateRoot<DeliveryProps> {
 
   get returnedAt() {
     return this.props.returnedAt;
+  }
+
+  get product() {
+    return this.props.product;
   }
 
   set status(status: Status) {
