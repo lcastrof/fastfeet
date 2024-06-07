@@ -1,5 +1,6 @@
 import { Either, left, right } from "@/core/either";
 import { ResourceNotFoundError } from "@/core/errors/resource-not-found-error";
+import { Injectable } from "@nestjs/common";
 import { Status } from "../../enterprise/entities/value-objects/status";
 import { DeliveryRepository } from "../repositories/delivery-repository";
 import { InvalidStatusError } from "./errors/invalid-status-error";
@@ -9,8 +10,12 @@ interface ChangeDeliveryStatusRequest {
   status: string;
 }
 
-type ChangeDeliveryStatusResponse = Either<ResourceNotFoundError, null>;
+type ChangeDeliveryStatusResponse = Either<
+  ResourceNotFoundError | InvalidStatusError,
+  null
+>;
 
+@Injectable()
 export class ChangeDeliveryStatusUseCase {
   constructor(private readonly deliveryRepository: DeliveryRepository) {}
 

@@ -1,5 +1,6 @@
 import { Either, right } from "@/core/either";
 import { PaginatedResponse } from "@/core/repositories/pagination";
+import { Injectable } from "@nestjs/common";
 import { Delivery } from "../../enterprise/entities/delivery";
 import { DeliveryRepository } from "../repositories/delivery-repository";
 
@@ -14,6 +15,7 @@ type ListDeliveriesByDeliverymanResponse = Either<
   PaginatedResponse<Delivery>
 >;
 
+@Injectable()
 export class ListDeliveriesByDeliverymanUseCase {
   constructor(private readonly deliveryRepository: DeliveryRepository) {}
 
