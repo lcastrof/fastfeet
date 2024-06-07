@@ -83,3 +83,27 @@ DELETE {{baseUrl}}/recipients/2
 Authorization: Bearer {{authToken}}
 
 ###
+
+# @name create_delivery
+POST {{baseUrl}}/deliveries
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "recipientId": 6,
+  "product": "Product"
+}
+
+###
+
+# @name list_deliveries_by_deliveryman
+GET {{baseUrl}}/deliveries/deliveryman/6?page=1&itemsPerPage=10
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name delete_delivery
+DELETE {{baseUrl}}/deliveries/2
+Authorization: Bearer {{authToken}}
+
+###
