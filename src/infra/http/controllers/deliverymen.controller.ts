@@ -27,6 +27,7 @@ import {
 } from "@nestjs/common";
 import { hash } from "bcryptjs";
 import { z } from "zod";
+import { DeliverymanPresenter } from "../presenters/deliveryman-presenter";
 
 const createDeliverymanBodySchema = z.object({
   name: z.string(),
@@ -94,7 +95,9 @@ export class DeliverymenController {
       throw new InternalServerErrorException();
     }
 
-    return res.value;
+    return {
+      deliveryman: DeliverymanPresenter.toHTTP(res.value.deliveryman),
+    };
   }
 
   @Get("/:id")
@@ -110,7 +113,9 @@ export class DeliverymenController {
       throw new InternalServerErrorException();
     }
 
-    return res.value;
+    return {
+      deliveryman: DeliverymanPresenter.toHTTP(res.value.deliveryman),
+    };
   }
 
   @Delete("/:id")
