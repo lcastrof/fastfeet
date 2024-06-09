@@ -108,3 +108,57 @@ DELETE {{baseUrl}}/deliveries/2
 Authorization: Bearer {{authToken}}
 
 ###
+# export enum StatusEnum {
+#   NOT_STARTED = "NOT_STARTED",
+#   WAITING = "WAITING",
+#   WITHDRAWN = "WITHDRAWN",
+#   DELIVERED = "DELIVERED",
+#   RETURNED = "RETURNED",
+# }
+
+# @name change_delivery_status_to_waiting
+PATCH {{baseUrl}}/deliveries/3/change-status
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "status": "WAITING"
+}
+
+###
+
+# @name change_delivery_status_to_withdrawn
+PATCH {{baseUrl}}/deliveries/3/change-status
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "status": "WITHDRAWN",
+  "deliverymanId": 12
+}
+
+###
+
+# @name change_delivery_status_to_delivered
+PATCH {{baseUrl}}/deliveries/3/change-status
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "status": "DELIVERED",
+  "attachmentId": 1
+}
+
+###
+
+# @name change_delivery_status_to_returned
+
+PATCH {{baseUrl}}/deliveries/3/change-status
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "status": "RETURNED"
+}
+
+// UPLOAD ATTACHMENT
