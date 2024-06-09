@@ -1,4 +1,5 @@
 import { ResourceNotFoundError } from "@/core/errors/resource-not-found-error";
+import { ChangeDeliverymanPasswordUseCase } from "@/domain/delivery/application/use-cases/change-deliveryman-password";
 import { CreateDeliverymanUseCase } from "@/domain/delivery/application/use-cases/create-deliveryman";
 import { DeleteDeliverymanUseCase } from "@/domain/delivery/application/use-cases/delete-deliveryman";
 import { EditDeliverymanUseCase } from "@/domain/delivery/application/use-cases/edit-deliveryman";
@@ -19,6 +20,7 @@ import {
   HttpCode,
   InternalServerErrorException,
   Param,
+  Patch,
   Post,
   Put,
   UsePipes,
@@ -54,6 +56,7 @@ export class DeliverymenController {
     private getDeliverymanById: GetDeliverymanByIdUseCase,
     private deleteDeliveryman: DeleteDeliverymanUseCase,
     private editDeliveryman: EditDeliverymanUseCase,
+    private changeDeliverymanPassword: ChangeDeliverymanPasswordUseCase,
   ) {}
 
   @Post()
@@ -153,6 +156,26 @@ export class DeliverymenController {
 
       if (res.value instanceof CPFAlreadyExistsError) {
         throw new BadRequestException("CPF already in use");
+      }
+
+      throw new InternalServerErrorException();
+    }
+  }
+
+  @Patch("/:id/change-password")
+  @HttpCode(200)
+  async changePassword(
+    @Param("id") id: string,
+    @Body("password") password: string,
+  ) {
+    const res = await this.changeDeliverymanPassword.execute({
+      deliverymanId: id,
+      password,
+    });
+
+    if (res.isLeft()) {
+      if (res.value instanceof ResourceNotFoundError) {
+        throw new BadRequestException("Deliveryman not found");
       }
 
       throw new InternalServerErrorException();

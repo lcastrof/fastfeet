@@ -1,3 +1,4 @@
+import { ChangeDeliverymanPasswordUseCase } from "@/domain/delivery/application/use-cases/change-deliveryman-password";
 import { CreateDeliveryUseCase } from "@/domain/delivery/application/use-cases/create-delivery";
 import { CreateDeliverymanUseCase } from "@/domain/delivery/application/use-cases/create-deliveryman";
 import { CreateRecipientUseCase } from "@/domain/delivery/application/use-cases/create-recipient";
@@ -46,6 +47,7 @@ import { RecipientsController } from "./controllers/recipients.controller";
     MarkDeliveryStatusAsWaitingUseCase,
     MarkDeliveryStatusAsWithdrawnUseCase,
     ChangeDeliveryStatusFactory,
+    ChangeDeliverymanPasswordUseCase,
   ],
 })
 export class HttpModule {}
