@@ -1,28 +1,29 @@
 import { Either, left, right } from "@/core/either";
+import { StatusEnum } from "@/core/enums/status";
 import { ResourceNotFoundError } from "@/core/errors/resource-not-found-error";
 import { Injectable } from "@nestjs/common";
 import { Status } from "../../enterprise/entities/value-objects/status";
 import { DeliveryRepository } from "../repositories/delivery-repository";
 import { InvalidStatusError } from "./errors/invalid-status-error";
 
-interface ChangeDeliveryStatusRequest {
+interface MarkDeliveryStatusAsReturnedRequest {
   deliveryId: string;
-  status: string;
+  status: StatusEnum.RETURNED;
 }
 
-type ChangeDeliveryStatusResponse = Either<
+type MarkDeliveryStatusAsReturnedResponse = Either<
   ResourceNotFoundError | InvalidStatusError,
   null
 >;
 
 @Injectable()
-export class ChangeDeliveryStatusUseCase {
+export class MarkDeliveryStatusAsReturnedUseCase {
   constructor(private readonly deliveryRepository: DeliveryRepository) {}
 
   async execute({
     deliveryId,
     status,
-  }: ChangeDeliveryStatusRequest): Promise<ChangeDeliveryStatusResponse> {
+  }: MarkDeliveryStatusAsReturnedRequest): Promise<MarkDeliveryStatusAsReturnedResponse> {
     if (!Status.validate(status)) {
       return left(new InvalidStatusError());
     }
@@ -34,6 +35,7 @@ export class ChangeDeliveryStatusUseCase {
     }
 
     delivery.status = Status.create(status);
+    delivery.returnedAt = new Date();
 
     await this.deliveryRepository.saveDelivery(delivery);
 

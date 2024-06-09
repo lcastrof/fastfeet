@@ -2,7 +2,6 @@ import { AggregateRoot } from "@/core/entities/aggregate-root";
 import { UniqueEntityID } from "@/core/entities/value-objects/unique-entity-id";
 import { StatusEnum } from "@/core/enums/status";
 import { DeliveryStatusChangeEvent } from "../events/delivery-status-change-event";
-import { Attachment } from "./attachment";
 import { Status } from "./value-objects/status";
 
 export interface DeliveryProps {
@@ -10,7 +9,7 @@ export interface DeliveryProps {
   status: Status;
   product: string;
   deliverymanId?: UniqueEntityID;
-  attachment?: Attachment;
+  attachmentId?: UniqueEntityID;
   postedAt?: Date;
   retrievedAt?: Date;
   deliveredAt?: Date;
@@ -26,28 +25,48 @@ export class Delivery extends AggregateRoot<DeliveryProps> {
     return this.props.recipientId;
   }
 
-  get deliverymanId() {
+  get deliverymanId(): UniqueEntityID | undefined {
     return this.props.deliverymanId;
+  }
+
+  set deliverymanId(deliverymanId: UniqueEntityID) {
+    this.props.deliverymanId = deliverymanId;
   }
 
   get postedAt() {
     return this.props.postedAt;
   }
 
-  get attachment() {
-    return this.props.attachment;
+  get attachmentId(): UniqueEntityID | undefined {
+    return this.props.attachmentId;
   }
 
-  get retrievedAt() {
+  set attachmentId(attachmentId: UniqueEntityID) {
+    this.props.attachmentId = attachmentId;
+  }
+
+  get retrievedAt(): Date | undefined {
     return this.props.retrievedAt;
   }
 
-  get deliveredAt() {
+  set retrievedAt(retrievedAt: Date) {
+    this.props.retrievedAt = retrievedAt;
+  }
+
+  get deliveredAt(): Date | undefined {
     return this.props.deliveredAt;
   }
 
-  get returnedAt() {
+  set deliveredAt(deliveredAt: Date) {
+    this.props.deliveredAt = deliveredAt;
+  }
+
+  get returnedAt(): Date | undefined {
     return this.props.returnedAt;
+  }
+
+  set returnedAt(returnedAt: Date) {
+    this.props.returnedAt = returnedAt;
   }
 
   get product() {

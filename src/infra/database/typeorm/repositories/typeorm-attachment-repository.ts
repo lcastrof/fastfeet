@@ -22,6 +22,16 @@ export class TypeormAttachmentRepository
     );
   }
 
+  async findById(id: string): Promise<Attachment | null> {
+    const attachment = await this.findOneBy({ id: Number(id) });
+
+    if (!attachment) {
+      return null;
+    }
+
+    return TypeormAttachmentMapper.toDomain(attachment);
+  }
+
   async findByDeliveryId(id: string): Promise<Attachment | null> {
     const attachment = await this.findOneBy({ deliveryId: Number(id) });
 

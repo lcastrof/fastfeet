@@ -1,5 +1,4 @@
 import { UniqueEntityID } from "@/core/entities/value-objects/unique-entity-id";
-import { Attachment } from "@/domain/delivery/enterprise/entities/attachment";
 import { Delivery } from "@/domain/delivery/enterprise/entities/delivery";
 import { Status } from "@/domain/delivery/enterprise/entities/value-objects/status";
 import { Delivery as TypeormDeliveryEntity } from "../entities/delivery.entity";
@@ -14,12 +13,8 @@ export class TypeormDeliveryMapper {
         deliverymanId: raw.deliverymanId
           ? new UniqueEntityID(raw.deliverymanId.toString())
           : undefined,
-        attachment: raw.attachment
-          ? Attachment.create({
-              deliveryId: new UniqueEntityID(raw.id.toString()),
-              link: raw.attachment.link,
-              title: raw.attachment.title,
-            })
+        attachmentId: raw.attachmentId
+          ? new UniqueEntityID(raw.attachmentId.toString())
           : undefined,
         deliveredAt: raw.deliveredAt,
         postedAt: raw.postedAt,
@@ -35,8 +30,8 @@ export class TypeormDeliveryMapper {
     if (Number.isInteger(Number(delivery.id))) {
       data.id = Number(delivery.id.toValue());
     }
-    data.attachmentId = delivery.attachment
-      ? Number(delivery.attachment.id.toValue())
+    data.attachmentId = delivery.attachmentId
+      ? Number(delivery.attachmentId.toValue())
       : undefined;
     data.deliverymanId = delivery.deliverymanId
       ? Number(delivery.deliverymanId.toValue())

@@ -23,4 +23,15 @@ export class InMemoryAttachmentRepository implements AttachmentRepository {
       (attachment) => attachment.deliveryId.toString() !== deliveryId,
     );
   }
+  async findById(id: string): Promise<Attachment | null> {
+    const attachment = this.attachments.find(
+      (attachment) => attachment.id.toString() === id,
+    );
+
+    if (!attachment) {
+      return null;
+    }
+
+    return attachment;
+  }
 }

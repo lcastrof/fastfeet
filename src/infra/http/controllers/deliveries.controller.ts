@@ -1,9 +1,11 @@
 import { StatusEnum } from "@/core/enums/status";
 import { ResourceNotFoundError } from "@/core/errors/resource-not-found-error";
-import { ChangeDeliveryStatusUseCase } from "@/domain/delivery/application/use-cases/change-delivery-status";
 import { CreateDeliveryUseCase } from "@/domain/delivery/application/use-cases/create-delivery";
 import { DeleteDeliveryUseCase } from "@/domain/delivery/application/use-cases/delete-delivery";
+import { InvalidAttachmentIdError } from "@/domain/delivery/application/use-cases/errors/invalid-attachment-id-error";
+import { InvalidDeliverymanIdError } from "@/domain/delivery/application/use-cases/errors/invalid-deliveryman-id-error";
 import { InvalidStatusError } from "@/domain/delivery/application/use-cases/errors/invalid-status-error";
+import { ChangeDeliveryStatusFactory } from "@/domain/delivery/application/use-cases/factories/change-delivery-status-factory";
 import { ListDeliveriesByDeliverymanUseCase } from "@/domain/delivery/application/use-cases/list-deliveries-by-deliveryman";
 import { Role } from "@/infra/enums/role.enum";
 import { ZodValidationPipe } from "@/infra/http/pipes/zod-validation-pipe";
@@ -17,8 +19,8 @@ import {
   HttpCode,
   InternalServerErrorException,
   Param,
+  Patch,
   Post,
-  Put,
   Query,
   UsePipes,
 } from "@nestjs/common";
@@ -29,9 +31,30 @@ const createDeliveryBodySchema = z.object({
   product: z.string(),
 });
 
-const changeDeliveryStatusBodySchema = z.object({
-  status: z.nativeEnum(StatusEnum),
+const changeDeliveryStatusToDeliveredBodySchema = z.object({
+  status: z.literal(StatusEnum.DELIVERED),
+  attachmentId: z.coerce.string(),
 });
+
+const changeDeliveryStatusToReturnedBodySchema = z.object({
+  status: z.literal(StatusEnum.RETURNED),
+});
+
+const changeDeliveryStatusToWaitingBodySchema = z.object({
+  status: z.literal(StatusEnum.WAITING),
+});
+
+const changeDeliveryStatusToWithdrawnBodySchema = z.object({
+  status: z.literal(StatusEnum.WITHDRAWN),
+  deliverymanId: z.coerce.string(),
+});
+
+const changeDeliveryStatusBodySchema = z.discriminatedUnion("status", [
+  changeDeliveryStatusToDeliveredBodySchema,
+  changeDeliveryStatusToReturnedBodySchema,
+  changeDeliveryStatusToWaitingBodySchema,
+  changeDeliveryStatusToWithdrawnBodySchema,
+]);
 
 const listDeliveriesByDeliveryManIdQuerySchema = z.object({
   page: z.coerce.number(),
@@ -51,7 +74,7 @@ export class DeliveriesController {
     private createDelivery: CreateDeliveryUseCase,
     private listDeliveriesByDeliveryManId: ListDeliveriesByDeliverymanUseCase,
     private deleteDelivery: DeleteDeliveryUseCase,
-    private changeDeliveryStatus: ChangeDeliveryStatusUseCase,
+    private changeDeliveryStatusFactory: ChangeDeliveryStatusFactory,
   ) {}
 
   @Post()
@@ -110,17 +133,21 @@ export class DeliveriesController {
     return;
   }
 
-  @Put("/:id/change-status")
+  // TODO - Add constraints to prevent invalid status transitions and check if the body is valid
+  @Patch("/:id/change-status")
   @HttpCode(200)
   async update(
     @Param("id") id: string,
     @Body(new ZodValidationPipe(changeDeliveryStatusBodySchema))
-    { status }: ChangeDeliveryStatusDto,
+    body: ChangeDeliveryStatusDto,
   ) {
-    const res = await this.changeDeliveryStatus.execute({
-      deliveryId: id,
-      status,
-    });
+    // TODO - remove any
+    const res: any = await this.changeDeliveryStatusFactory
+      .getChangeDeliveryStatusUseCase(body.status)
+      .execute({
+        deliveryId: id,
+        ...body,
+      } as any);
 
     if (res.isLeft()) {
       if (res.value instanceof ResourceNotFoundError) {
@@ -131,6 +158,14 @@ export class DeliveriesController {
         throw new BadRequestException(
           `Invalid Status, must be one of: ${Object.values(StatusEnum).join(", ")}`,
         );
+      }
+
+      if (res.value instanceof InvalidDeliverymanIdError) {
+        throw new BadRequestException("Invalid deliveryman id");
+      }
+
+      if (res.value instanceof InvalidAttachmentIdError) {
+        throw new BadRequestException("Invalid attachment id");
       }
 
       throw new InternalServerErrorException();
