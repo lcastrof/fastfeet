@@ -9,6 +9,7 @@ Content-Type: application/json
 
 {
   "cpf": "00000000000",
+  // TODO: change this password
   "password": "ehOADMta?"
 }
 
