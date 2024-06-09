@@ -11,6 +11,7 @@ import { ChangeDeliveryStatusFactory } from "@/domain/delivery/application/use-c
 import { GetDeliverymanByIdUseCase } from "@/domain/delivery/application/use-cases/get-deliveryman-by-id";
 import { GetRecipientByIdUseCase } from "@/domain/delivery/application/use-cases/get-recipient-by-id";
 import { ListDeliveriesByDeliverymanUseCase } from "@/domain/delivery/application/use-cases/list-deliveries-by-deliveryman";
+import { ListDeliveriesNearbyDeliverymanUseCase } from "@/domain/delivery/application/use-cases/list-deliveries-nearby-deliveryman";
 import { MarkDeliveryStatusAsDeliveredUseCase } from "@/domain/delivery/application/use-cases/mark-delivery-status-as-delivered";
 import { MarkDeliveryStatusAsReturnedUseCase } from "@/domain/delivery/application/use-cases/mark-delivery-status-as-returned";
 import { MarkDeliveryStatusAsWaitingUseCase } from "@/domain/delivery/application/use-cases/mark-delivery-status-as-waiting";
@@ -48,6 +49,7 @@ import { RecipientsController } from "./controllers/recipients.controller";
     MarkDeliveryStatusAsWithdrawnUseCase,
     ChangeDeliveryStatusFactory,
     ChangeDeliverymanPasswordUseCase,
+    ListDeliveriesNearbyDeliverymanUseCase,
   ],
 })
 export class HttpModule {}

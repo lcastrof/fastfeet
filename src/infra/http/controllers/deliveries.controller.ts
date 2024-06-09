@@ -8,6 +8,7 @@ import { InvalidStatusError } from "@/domain/delivery/application/use-cases/erro
 import { UnauthorizedDeliverymanError } from "@/domain/delivery/application/use-cases/errors/unauthorized-deliveryman-error";
 import { ChangeDeliveryStatusFactory } from "@/domain/delivery/application/use-cases/factories/change-delivery-status-factory";
 import { ListDeliveriesByDeliverymanUseCase } from "@/domain/delivery/application/use-cases/list-deliveries-by-deliveryman";
+import { ListDeliveriesNearbyDeliverymanUseCase } from "@/domain/delivery/application/use-cases/list-deliveries-nearby-deliveryman";
 import { CurrentUser } from "@/infra/auth/current-user-decorator";
 import { UserPayload } from "@/infra/auth/jwt.strategy";
 import { Role } from "@/infra/enums/role.enum";
@@ -65,10 +66,19 @@ const listDeliveriesByDeliveryManIdQuerySchema = z.object({
   itemsPerPage: z.coerce.number(),
 });
 
+const listDeliveriesNearbyDeliverymanQuerySchema = z.object({
+  page: z.coerce.number(),
+  itemsPerPage: z.coerce.number(),
+  maxDistance: z.coerce.number().optional().default(400),
+});
+
 type CreateDeliveryDto = z.infer<typeof createDeliveryBodySchema>;
 type ChangeDeliveryStatusDto = z.infer<typeof changeDeliveryStatusBodySchema>;
 type ListDeliveriesByDeliveryManIdQuery = z.infer<
   typeof listDeliveriesByDeliveryManIdQuerySchema
+>;
+type ListDeliveriesNearbyDeliverymanQuery = z.infer<
+  typeof listDeliveriesNearbyDeliverymanQuerySchema
 >;
 
 @Controller("/deliveries")
@@ -78,6 +88,7 @@ export class DeliveriesController {
     private listDeliveriesByDeliveryManId: ListDeliveriesByDeliverymanUseCase,
     private deleteDelivery: DeleteDeliveryUseCase,
     private changeDeliveryStatusFactory: ChangeDeliveryStatusFactory,
+    private listDeliveriesNearbyDeliveryman: ListDeliveriesNearbyDeliverymanUseCase,
   ) {}
 
   @Post()
@@ -116,6 +127,35 @@ export class DeliveriesController {
 
     const res = await this.listDeliveriesByDeliveryManId.execute({
       deliverymanId: id,
+      page,
+      itemsPerPage,
+    });
+
+    if (res.isLeft()) {
+      throw new InternalServerErrorException();
+    }
+
+    return res.value;
+  }
+
+  @Get("/deliveryman/:id/nearby")
+  @Roles(Role.Deliveryman, Role.Admin)
+  @HttpCode(200)
+  async findNearbyByDeliverymanId(
+    @Param("id") id: string,
+    @Query(new ZodValidationPipe(listDeliveriesNearbyDeliverymanQuerySchema))
+    { page, itemsPerPage, maxDistance }: ListDeliveriesNearbyDeliverymanQuery,
+    @CurrentUser() user: UserPayload,
+  ) {
+    if (Number(id) !== user.sub && !user.permissions.includes(Role.Admin)) {
+      throw new UnauthorizedException(
+        "You can only see the deliveries near you",
+      );
+    }
+
+    const res = await this.listDeliveriesNearbyDeliveryman.execute({
+      deliverymanId: id,
+      maxDistance,
       page,
       itemsPerPage,
     });
