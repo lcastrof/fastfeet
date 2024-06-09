@@ -12,10 +12,11 @@ let sut: CreateDeliveryUseCase;
 describe("Create Delivery", () => {
   beforeEach(() => {
     inMemoryAttachmentRepository = new InMemoryAttachmentRepository();
+    inMemoryRecipientRepository = new InMemoryRecipientRepository();
     inMemoryDeliveryRepository = new InMemoryDeliveryRepository(
       inMemoryAttachmentRepository,
+      inMemoryRecipientRepository,
     );
-    inMemoryRecipientRepository = new InMemoryRecipientRepository();
     sut = new CreateDeliveryUseCase(
       inMemoryDeliveryRepository,
       inMemoryRecipientRepository,
@@ -36,10 +37,10 @@ describe("Create Delivery", () => {
     expect(result.isRight()).toBe(true);
 
     if (result.isRight()) {
-      expect(result.value.delivery.recipientId.toValue()).toEqual(
-        request.recipientId,
-      );
-      expect(result.value.delivery.product).toEqual(request.product);
+      expect(inMemoryDeliveryRepository.deliveries).toHaveLength(1);
+      expect(
+        inMemoryDeliveryRepository.deliveries[0].recipientId.toValue(),
+      ).toBe(recipient.id.toValue());
     }
   });
 });

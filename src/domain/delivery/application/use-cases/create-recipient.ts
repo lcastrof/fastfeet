@@ -22,7 +22,7 @@ interface CreateRecipientRequest {
 
 type CreateRecipientResponse = Either<
   InvalidEmailError | EmailAlreadyExistsError,
-  { recipient: Recipient }
+  null
 >;
 
 @Injectable()
@@ -50,6 +50,6 @@ export class CreateRecipientUseCase {
     });
     await this.recipientRepository.createRecipient(recipient);
 
-    return right({ recipient });
+    return right(null);
   }
 }

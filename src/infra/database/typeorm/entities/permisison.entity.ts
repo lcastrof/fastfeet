@@ -11,10 +11,10 @@ export class Permission {
   @Column({
     default: new Date(),
   })
-  created_at: Date;
+  created_at?: Date;
 
   @Column({
     default: new Date(),
   })
-  updated_at: Date;
+  updated_at?: Date;
 }

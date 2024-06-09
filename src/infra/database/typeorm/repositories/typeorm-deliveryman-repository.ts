@@ -46,7 +46,11 @@ export class TypeormDeliverymanRepository
   }
 
   async findByCpf(cpf: string): Promise<Deliveryman | null> {
-    const user = await this.findOneBy({ cpf });
+    const user = await this.findOne({
+      where: { cpf },
+      relations: ["permissions"],
+    });
+    console.log(user);
 
     if (!user) {
       return null;
@@ -55,6 +59,7 @@ export class TypeormDeliverymanRepository
     return TypeormDeliverymanMapper.toDomain(user);
   }
 
+  // TODO - separate this method into a permission repository
   async createDeliveryman(deliveryman: Deliveryman) {
     const data = TypeormDeliverymanMapper.toPersistence(deliveryman);
 

@@ -4,7 +4,7 @@ export class CreateAdmin1715717936473 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
             INSERT INTO users (name, email, cpf, password_hashed)
-            VALUES ('admin', 'admin@admin.com', '00000000000', '$2a$08$VuYhTFpIJ48qv2NzwQFQh.hQwhoAwD7hid7itTefpfl/YNJ9Ihu9y');
+            VALUES ('admin', 'admin@admin.com', '53335329074', '$2a$08$KbxX7PqLkRM..PE7sFobSOilcjbr6J74/U9uNRXjKjpO0skEHKB0W');
         `);
 
     await queryRunner.query(`

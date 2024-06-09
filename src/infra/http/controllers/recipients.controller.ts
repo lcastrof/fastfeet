@@ -87,10 +87,6 @@ export class RecipientsController {
 
       throw new InternalServerErrorException();
     }
-
-    return {
-      recipient: RecipientPresenter.toHTTP(res.value.recipient),
-    };
   }
 
   @Get("/:id")

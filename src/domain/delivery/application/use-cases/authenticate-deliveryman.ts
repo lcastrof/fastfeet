@@ -44,6 +44,9 @@ export class AuthenticateDeliverymanUseCase {
 
     const accessToken = await this.encrypter.encrypt({
       sub: deliveryman.id.toString(),
+      permissions: deliveryman.permissions?.map(
+        (permission) => permission.code,
+      ),
     });
 
     return right({ accessToken });

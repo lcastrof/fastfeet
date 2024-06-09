@@ -109,10 +109,6 @@ export class DeliveriesController {
 
       throw new InternalServerErrorException();
     }
-
-    return {
-      delivery: DeliveryPresenter.toHTTP(res.value.delivery),
-    };
   }
 
   @Get("/deliveryman/:id")

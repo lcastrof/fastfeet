@@ -13,10 +13,7 @@ interface CreateDeliveryRequest {
   product: string;
 }
 
-type CreateDeliveryResponse = Either<
-  ResourceNotFoundError,
-  { delivery: Delivery }
->;
+type CreateDeliveryResponse = Either<ResourceNotFoundError, null>;
 
 @Injectable()
 export class CreateDeliveryUseCase {
@@ -40,8 +37,9 @@ export class CreateDeliveryUseCase {
       status: Status.create(StatusEnum.NOT_STARTED),
       product: product,
     });
+
     await this.deliveryRepository.createDelivery(delivery);
 
-    return right({ delivery });
+    return right(null);
   }
 }

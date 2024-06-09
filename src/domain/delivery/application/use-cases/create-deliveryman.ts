@@ -24,7 +24,7 @@ type CreateDeliverymanResponse = Either<
   | InvalidEmailError
   | EmailAlreadyExistsError
   | CPFAlreadyExistsError,
-  { deliveryman: Deliveryman }
+  null
 >;
 
 @Injectable()
@@ -70,11 +70,12 @@ export class CreateDeliverymanUseCase {
       email: Email.create(email),
       cpf: Cpf.create(cpf),
       password: await this.hashGenerator.hash(password),
+      permissions: [],
       latitude,
       longitude,
     });
     await this.deliverymanRepository.createDeliveryman(deliveryman);
 
-    return right({ deliveryman });
+    return right(null);
   }
 }

@@ -30,9 +30,10 @@ describe("Create Deliveryman", () => {
     const result = await sut.execute(request);
 
     expect(result.isRight()).toBe(true);
-    expect(result.value).toEqual({
-      deliveryman: inMemoryDeliverymanRepository.deliverymen[0],
-    });
+    expect(inMemoryDeliverymanRepository.deliverymen).toHaveLength(1);
+    expect(inMemoryDeliverymanRepository.deliverymen[0].name).toBe(
+      request.name,
+    );
   });
 
   it("should not be able to create a deliveryman with an invalid email or cpf", async () => {

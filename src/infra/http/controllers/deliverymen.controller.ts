@@ -25,7 +25,6 @@ import {
   Put,
   UsePipes,
 } from "@nestjs/common";
-import { hash } from "bcryptjs";
 import { z } from "zod";
 import { DeliverymanPresenter } from "../presenters/deliveryman-presenter";
 
@@ -64,16 +63,7 @@ export class DeliverymenController {
   @HttpCode(201)
   @UsePipes(new ZodValidationPipe(createDeliverymanBodySchema))
   async create(@Body() deliveryman: CreateDeliverymanDto) {
-    const { password, ...rest } = deliveryman;
-
-    const passwordHashed = await hash(password, 8);
-
-    const userObj = {
-      ...rest,
-      password: passwordHashed,
-    };
-
-    const res = await this.createDeliveryman.execute(userObj);
+    const res = await this.createDeliveryman.execute(deliveryman);
 
     if (res.isLeft()) {
       if (res.value instanceof InvalidCpfError) {
@@ -94,10 +84,6 @@ export class DeliverymenController {
 
       throw new InternalServerErrorException();
     }
-
-    return {
-      deliveryman: DeliverymanPresenter.toHTTP(res.value.deliveryman),
-    };
   }
 
   @Get("/:id")

@@ -1,17 +1,15 @@
+import { AuthenticateDeliverymanUseCase } from "@/domain/delivery/application/use-cases/authenticate-deliveryman";
+import { WrongCredentialsError } from "@/domain/delivery/application/use-cases/errors/wrong-credentials-error";
 import { Public } from "@/infra/auth/public";
-import { User } from "@/infra/database/typeorm/entities/user.entity";
 import { ZodValidationPipe } from "@/infra/http/pipes/zod-validation-pipe";
 import {
   Body,
   Controller,
+  InternalServerErrorException,
   Post,
   UnauthorizedException,
   UsePipes,
 } from "@nestjs/common";
-import { JwtService } from "@nestjs/jwt";
-import { InjectRepository } from "@nestjs/typeorm";
-import { compare } from "bcryptjs";
-import { Repository } from "typeorm";
 import { z } from "zod";
 
 const createSessionBodySchema = z.object({
@@ -24,37 +22,28 @@ type CreateSessionDTO = z.infer<typeof createSessionBodySchema>;
 @Controller("/sessions")
 export class AuthController {
   constructor(
-    private jwt: JwtService,
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
+    private authenticateDeliveryman: AuthenticateDeliverymanUseCase,
   ) {}
 
   @Post()
   @Public()
   @UsePipes(new ZodValidationPipe(createSessionBodySchema))
   async create(@Body() { cpf, password }: CreateSessionDTO) {
-    const user = await this.userRepository.findOne({
-      where: { cpf },
-      relations: ["permissions"],
+    const result = await this.authenticateDeliveryman.execute({
+      cpf,
+      password,
     });
 
-    if (!user) {
-      throw new UnauthorizedException("User credentials do not match");
+    if (result.isLeft()) {
+      if (result.value instanceof WrongCredentialsError) {
+        return new UnauthorizedException(result.value.message);
+      }
+
+      return new InternalServerErrorException(result.value);
     }
-
-    const isPasswordValid = await compare(password, user.passwordHashed);
-
-    if (!isPasswordValid) {
-      throw new UnauthorizedException("User credentials do not match");
-    }
-
-    const accessToken = this.jwt.sign({
-      sub: user.id,
-      permissions: user.permissions.map((permission) => permission.code),
-    });
 
     return {
-      access_token: accessToken,
+      accessToken: result.value.accessToken,
     };
   }
 }

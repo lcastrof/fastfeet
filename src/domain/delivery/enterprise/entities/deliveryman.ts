@@ -1,6 +1,7 @@
 import { Entity } from "@/core/entities/entity";
 import { UniqueEntityID } from "@/core/entities/value-objects/unique-entity-id";
 import { Cpf } from "@/domain/delivery/enterprise/entities/value-objects/cpf";
+import { Permission } from "./permission";
 import { Email } from "./value-objects/email";
 
 export interface DeliverymanProps {
@@ -9,6 +10,7 @@ export interface DeliverymanProps {
   password: string;
   latitude: number;
   longitude: number;
+  permissions: Permission[];
   cpf: Cpf;
 }
 
@@ -59,6 +61,10 @@ export class Deliveryman extends Entity<DeliverymanProps> {
 
   set cpf(cpf: Cpf) {
     this.props.cpf = cpf;
+  }
+
+  get permissions() {
+    return this.props.permissions;
   }
 
   static create(props: DeliverymanProps, id?: UniqueEntityID) {
