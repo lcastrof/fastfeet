@@ -66,23 +66,20 @@ export class DeliverymenController {
     const res = await this.createDeliveryman.execute(deliveryman);
 
     if (res.isLeft()) {
-      if (res.value instanceof InvalidCpfError) {
-        throw new BadRequestException("Invalid CPF");
-      }
+      const error = res.value;
 
-      if (res.value instanceof InvalidEmailError) {
-        throw new BadRequestException("Invalid Email");
+      switch (error.constructor) {
+        case InvalidCpfError:
+          throw new BadRequestException("Invalid CPF");
+        case InvalidEmailError:
+          throw new BadRequestException("Invalid Email");
+        case EmailAlreadyExistsError:
+          throw new BadRequestException("Email already in use");
+        case CPFAlreadyExistsError:
+          throw new BadRequestException("CPF already in use");
+        default:
+          throw new InternalServerErrorException();
       }
-
-      if (res.value instanceof EmailAlreadyExistsError) {
-        throw new BadRequestException("Email already in use");
-      }
-
-      if (res.value instanceof CPFAlreadyExistsError) {
-        throw new BadRequestException("CPF already in use");
-      }
-
-      throw new InternalServerErrorException();
     }
   }
 
@@ -93,7 +90,7 @@ export class DeliverymenController {
 
     if (res.isLeft()) {
       if (res.value instanceof ResourceNotFoundError) {
-        throw new BadRequestException("Deliveryman not found");
+        throw new BadRequestException(res.value.message);
       }
 
       throw new InternalServerErrorException();
@@ -111,7 +108,7 @@ export class DeliverymenController {
 
     if (res?.isLeft()) {
       if (res.value instanceof ResourceNotFoundError) {
-        throw new BadRequestException("Deliveryman not found");
+        throw new BadRequestException(res.value.message);
       }
 
       throw new InternalServerErrorException();
@@ -133,23 +130,21 @@ export class DeliverymenController {
     });
 
     if (res.isLeft()) {
-      if (res.value instanceof InvalidCpfError) {
-        throw new BadRequestException("Invalid CPF");
+      const error = res.value;
+      switch (error.constructor) {
+        case InvalidCpfError:
+          throw new BadRequestException(error.message);
+        case InvalidEmailError:
+          throw new BadRequestException(error.message);
+        case EmailAlreadyExistsError:
+          throw new BadRequestException(error.message);
+        case CPFAlreadyExistsError:
+          throw new BadRequestException(error.message);
+        case ResourceNotFoundError:
+          throw new BadRequestException(error.message);
+        default:
+          throw new InternalServerErrorException();
       }
-
-      if (res.value instanceof InvalidEmailError) {
-        throw new BadRequestException("Invalid Email");
-      }
-
-      if (res.value instanceof EmailAlreadyExistsError) {
-        throw new BadRequestException("Email already in use");
-      }
-
-      if (res.value instanceof CPFAlreadyExistsError) {
-        throw new BadRequestException("CPF already in use");
-      }
-
-      throw new InternalServerErrorException();
     }
   }
 
@@ -166,7 +161,7 @@ export class DeliverymenController {
 
     if (res.isLeft()) {
       if (res.value instanceof ResourceNotFoundError) {
-        throw new BadRequestException("Deliveryman not found");
+        throw new BadRequestException(res.value.message);
       }
 
       throw new InternalServerErrorException();

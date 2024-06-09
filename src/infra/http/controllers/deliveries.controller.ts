@@ -180,7 +180,7 @@ export class DeliveriesController {
 
     if (res?.isLeft()) {
       if (res.value instanceof ResourceNotFoundError) {
-        throw new BadRequestException("Delivery not found");
+        throw new BadRequestException(res.value.message);
       }
 
       throw new InternalServerErrorException();
@@ -212,31 +212,24 @@ export class DeliveriesController {
       .execute(request);
 
     if (res.isLeft()) {
-      if (res.value instanceof ResourceNotFoundError) {
-        throw new BadRequestException("Delivery not found");
-      }
+      const error = res.value;
 
-      if (res.value instanceof InvalidStatusError) {
-        throw new BadRequestException(
-          `Invalid Status, must be one of: ${Object.values(StatusEnum).join(", ")}`,
-        );
+      switch (error.constructor) {
+        case InvalidStatusError:
+          throw new BadRequestException(
+            `Invalid Status, must be one of: ${Object.values(StatusEnum).join(", ")}`,
+          );
+        case InvalidDeliverymanIdError:
+          throw new BadRequestException(error.message);
+        case InvalidAttachmentIdError:
+          throw new BadRequestException(error.message);
+        case UnauthorizedDeliverymanError:
+          throw new UnauthorizedException(
+            "A deliveryman can only mark a delivery as delivered if it is assigned to him",
+          );
+        default:
+          throw new InternalServerErrorException();
       }
-
-      if (res.value instanceof InvalidDeliverymanIdError) {
-        throw new BadRequestException("Invalid deliveryman id");
-      }
-
-      if (res.value instanceof InvalidAttachmentIdError) {
-        throw new BadRequestException("Invalid attachment id");
-      }
-
-      if (res.value instanceof UnauthorizedDeliverymanError) {
-        throw new UnauthorizedException(
-          "A deliveryman can only mark a delivery as delivered if it is assigned to him",
-        );
-      }
-
-      throw new InternalServerErrorException();
     }
   }
 }

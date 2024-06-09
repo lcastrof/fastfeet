@@ -73,19 +73,21 @@ export class RecipientsController {
     const res = await this.createRecipient.execute(recipient);
 
     if (res.isLeft()) {
-      if (res.value instanceof InvalidCpfError) {
-        throw new BadRequestException("Invalid CPF");
-      }
+      const error = res.value;
 
-      if (res.value instanceof InvalidEmailError) {
-        throw new BadRequestException("Invalid Email");
-      }
+      switch (error.constructor) {
+        case InvalidCpfError:
+          throw new BadRequestException(error.message);
 
-      if (res.value instanceof EmailAlreadyExistsError) {
-        throw new BadRequestException("Email already in use");
-      }
+        case InvalidEmailError:
+          throw new BadRequestException(error.message);
 
-      throw new InternalServerErrorException();
+        case EmailAlreadyExistsError:
+          throw new BadRequestException(error.message);
+
+        default:
+          throw new InternalServerErrorException();
+      }
     }
   }
 
@@ -96,7 +98,7 @@ export class RecipientsController {
 
     if (res.isLeft()) {
       if (res.value instanceof ResourceNotFoundError) {
-        throw new BadRequestException("Recipient not found");
+        throw new BadRequestException(res.value.message);
       }
 
       throw new InternalServerErrorException();
@@ -114,7 +116,7 @@ export class RecipientsController {
 
     if (res?.isLeft()) {
       if (res.value instanceof ResourceNotFoundError) {
-        throw new BadRequestException("Recipient not found");
+        throw new BadRequestException(res.value.message);
       }
 
       throw new InternalServerErrorException();
@@ -136,19 +138,21 @@ export class RecipientsController {
     });
 
     if (res.isLeft()) {
-      if (res.value instanceof InvalidEmailError) {
-        throw new BadRequestException("Invalid Email");
-      }
+      const error = res.value;
 
-      if (res.value instanceof ResourceNotFoundError) {
-        throw new BadRequestException("Recipient not found");
-      }
+      switch (error.constructor) {
+        case InvalidCpfError:
+          throw new BadRequestException(error.message);
 
-      if (res.value instanceof EmailAlreadyExistsError) {
-        throw new BadRequestException("Email already in use");
-      }
+        case InvalidEmailError:
+          throw new BadRequestException(error.message);
 
-      throw new InternalServerErrorException();
+        case EmailAlreadyExistsError:
+          throw new BadRequestException(error.message);
+
+        default:
+          throw new InternalServerErrorException();
+      }
     }
   }
 }
