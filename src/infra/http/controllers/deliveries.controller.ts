@@ -30,6 +30,7 @@ import {
   UsePipes,
 } from "@nestjs/common";
 import { z } from "zod";
+import { DeliveryPresenter } from "../presenters/delivery-presenter";
 
 const createDeliveryBodySchema = z.object({
   recipientId: z.number(),
@@ -109,7 +110,9 @@ export class DeliveriesController {
       throw new InternalServerErrorException();
     }
 
-    return res.value;
+    return {
+      delivery: DeliveryPresenter.toHTTP(res.value.delivery),
+    };
   }
 
   @Get("/deliveryman/:id")
@@ -135,7 +138,10 @@ export class DeliveriesController {
       throw new InternalServerErrorException();
     }
 
-    return res.value;
+    return {
+      deliveries: res.value.data.map(DeliveryPresenter.toHTTP),
+      meta: res.value.meta,
+    };
   }
 
   @Get("/deliveryman/:id/nearby")
@@ -164,7 +170,10 @@ export class DeliveriesController {
       throw new InternalServerErrorException();
     }
 
-    return res.value;
+    return {
+      deliveries: res.value.data.map(DeliveryPresenter.toHTTP),
+      meta: res.value.meta,
+    };
   }
 
   @Delete("/:id")
