@@ -1,14 +1,19 @@
+import { FakeHasher } from "test/cryptography/fake-hasher";
 import { InMemoryDeliverymanRepository } from "test/repositories/in-memory-deliveryman-repository";
 import { CreateDeliverymanUseCase } from "./create-deliveryman";
 
 let inMemoryDeliverymanRepository: InMemoryDeliverymanRepository;
+let fakeHasher: FakeHasher;
 let sut: CreateDeliverymanUseCase;
 
-// TOD0 - Testar RBAC (Role Based Access Control) no teste de integração posteriormente
 describe("Create Deliveryman", () => {
   beforeEach(() => {
     inMemoryDeliverymanRepository = new InMemoryDeliverymanRepository();
-    sut = new CreateDeliverymanUseCase(inMemoryDeliverymanRepository);
+    fakeHasher = new FakeHasher();
+    sut = new CreateDeliverymanUseCase(
+      inMemoryDeliverymanRepository,
+      fakeHasher,
+    );
   });
 
   it("should be able to create a deliveryman", async () => {
@@ -25,6 +30,9 @@ describe("Create Deliveryman", () => {
     const result = await sut.execute(request);
 
     expect(result.isRight()).toBe(true);
+    expect(result.value).toEqual({
+      deliveryman: inMemoryDeliverymanRepository.deliverymen[0],
+    });
   });
 
   it("should not be able to create a deliveryman with an invalid email or cpf", async () => {
@@ -51,5 +59,27 @@ describe("Create Deliveryman", () => {
     const result2 = await sut.execute(request2);
 
     expect(result2.isLeft()).toBe(true);
+  });
+
+  it("should hash deliveryman password upon registration", async () => {
+    const request = {
+      id: "1",
+      name: "John Doe",
+      email: "john@doe.com",
+      cpf: "12345678909",
+      password: "password",
+      latitude: 0,
+      longitude: 0,
+    };
+
+    await sut.execute(request);
+
+    expect(inMemoryDeliverymanRepository.deliverymen[0].password).not.toEqual(
+      request.password,
+    );
+
+    expect(inMemoryDeliverymanRepository.deliverymen[0].password).toContain(
+      "-hashed",
+    );
   });
 });

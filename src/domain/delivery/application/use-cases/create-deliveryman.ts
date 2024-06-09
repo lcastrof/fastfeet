@@ -4,6 +4,7 @@ import { Deliveryman } from "@/domain/delivery/enterprise/entities/deliveryman";
 import { Cpf } from "@/domain/delivery/enterprise/entities/value-objects/cpf";
 import { Injectable } from "@nestjs/common";
 import { Email } from "../../enterprise/entities/value-objects/email";
+import { HashGenerator } from "../cryptography/hash-generator";
 import { CPFAlreadyExistsError } from "./errors/cpf-already-exists-error";
 import { EmailAlreadyExistsError } from "./errors/email-already-exists-error";
 import { InvalidCpfError } from "./errors/invalid-cpf-error";
@@ -28,7 +29,10 @@ type CreateDeliverymanResponse = Either<
 
 @Injectable()
 export class CreateDeliverymanUseCase {
-  constructor(private readonly deliverymanRepository: DeliverymanRepository) {}
+  constructor(
+    private readonly deliverymanRepository: DeliverymanRepository,
+    private readonly hashGenerator: HashGenerator,
+  ) {}
 
   async execute({
     name,
@@ -65,7 +69,7 @@ export class CreateDeliverymanUseCase {
       name,
       email: Email.create(email),
       cpf: Cpf.create(cpf),
-      password,
+      password: await this.hashGenerator.hash(password),
       latitude,
       longitude,
     });
