@@ -10,7 +10,6 @@ import { ROLES_KEY } from "./roles.decorator";
 export class RolesGuard implements CanActivate {
   constructor(
     private reflector: Reflector,
-    // TODO - Try to inject the User repository by interface instead of the concrete class
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
   ) {}

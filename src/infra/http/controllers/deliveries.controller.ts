@@ -5,8 +5,11 @@ import { DeleteDeliveryUseCase } from "@/domain/delivery/application/use-cases/d
 import { InvalidAttachmentIdError } from "@/domain/delivery/application/use-cases/errors/invalid-attachment-id-error";
 import { InvalidDeliverymanIdError } from "@/domain/delivery/application/use-cases/errors/invalid-deliveryman-id-error";
 import { InvalidStatusError } from "@/domain/delivery/application/use-cases/errors/invalid-status-error";
+import { UnauthorizedDeliverymanError } from "@/domain/delivery/application/use-cases/errors/unauthorized-deliveryman-error";
 import { ChangeDeliveryStatusFactory } from "@/domain/delivery/application/use-cases/factories/change-delivery-status-factory";
 import { ListDeliveriesByDeliverymanUseCase } from "@/domain/delivery/application/use-cases/list-deliveries-by-deliveryman";
+import { CurrentUser } from "@/infra/auth/current-user-decorator";
+import { UserPayload } from "@/infra/auth/jwt.strategy";
 import { Role } from "@/infra/enums/role.enum";
 import { ZodValidationPipe } from "@/infra/http/pipes/zod-validation-pipe";
 import { Roles } from "@/infra/roles/roles.decorator";
@@ -22,6 +25,7 @@ import {
   Patch,
   Post,
   Query,
+  UnauthorizedException,
   UsePipes,
 } from "@nestjs/common";
 import { z } from "zod";
@@ -140,14 +144,19 @@ export class DeliveriesController {
     @Param("id") id: string,
     @Body(new ZodValidationPipe(changeDeliveryStatusBodySchema))
     body: ChangeDeliveryStatusDto,
+    @CurrentUser() user: UserPayload,
   ) {
     // TODO - remove any
+    const request = {
+      deliveryId: id,
+      ...body,
+    } as any;
+    if (body.status === StatusEnum.DELIVERED) {
+      request.deliverymanId = user.sub;
+    }
     const res: any = await this.changeDeliveryStatusFactory
       .getChangeDeliveryStatusUseCase(body.status)
-      .execute({
-        deliveryId: id,
-        ...body,
-      } as any);
+      .execute(request);
 
     if (res.isLeft()) {
       if (res.value instanceof ResourceNotFoundError) {
@@ -166,6 +175,12 @@ export class DeliveriesController {
 
       if (res.value instanceof InvalidAttachmentIdError) {
         throw new BadRequestException("Invalid attachment id");
+      }
+
+      if (res.value instanceof UnauthorizedDeliverymanError) {
+        throw new UnauthorizedException(
+          "A deliveryman can only mark a delivery as delivered if it is assigned to him",
+        );
       }
 
       throw new InternalServerErrorException();

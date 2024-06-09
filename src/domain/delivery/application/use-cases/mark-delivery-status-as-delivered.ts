@@ -8,15 +8,20 @@ import { AttachmentRepository } from "../repositories/attachment-repository";
 import { DeliveryRepository } from "../repositories/delivery-repository";
 import { InvalidAttachmentIdError } from "./errors/invalid-attachment-id-error";
 import { InvalidStatusError } from "./errors/invalid-status-error";
+import { UnauthorizedDeliverymanError } from "./errors/unauthorized-deliveryman-error";
 
 interface MarkDeliveryStatusAsDeliveredRequest {
   deliveryId: string;
+  deliverymanId: string;
   status: StatusEnum.DELIVERED;
   attachmentId: string;
 }
 
 type MarkDeliveryStatusAsDeliveredResponse = Either<
-  ResourceNotFoundError | InvalidStatusError | InvalidAttachmentIdError,
+  | ResourceNotFoundError
+  | InvalidStatusError
+  | InvalidAttachmentIdError
+  | UnauthorizedDeliverymanError,
   null
 >;
 
@@ -29,6 +34,7 @@ export class MarkDeliveryStatusAsDeliveredUseCase {
 
   async execute({
     deliveryId,
+    deliverymanId,
     attachmentId,
     status,
   }: MarkDeliveryStatusAsDeliveredRequest): Promise<MarkDeliveryStatusAsDeliveredResponse> {
@@ -40,6 +46,10 @@ export class MarkDeliveryStatusAsDeliveredUseCase {
 
     if (!delivery) {
       return left(new ResourceNotFoundError());
+    }
+
+    if (delivery.deliverymanId?.toValue() !== deliverymanId) {
+      return left(new UnauthorizedDeliverymanError());
     }
 
     const attachment = await this.attachmentRepository.findById(attachmentId);
