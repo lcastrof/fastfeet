@@ -23,6 +23,7 @@ import {
   UsePipes,
 } from "@nestjs/common";
 import { z } from "zod";
+import { RecipientPresenter } from "../presenters/recipient-presenter";
 
 const createRecipientBodySchema = z.object({
   name: z.string(),
@@ -87,10 +88,11 @@ export class RecipientsController {
       throw new InternalServerErrorException();
     }
 
-    return res.value;
+    return {
+      recipient: RecipientPresenter.toHTTP(res.value.recipient),
+    };
   }
 
-  // TODO - Fazer presenter
   @Get("/:id")
   @HttpCode(200)
   async findById(@Param("id") id: string) {
@@ -104,7 +106,9 @@ export class RecipientsController {
       throw new InternalServerErrorException();
     }
 
-    return res.value;
+    return {
+      recipient: RecipientPresenter.toHTTP(res.value.recipient),
+    };
   }
 
   @Delete("/:id")
