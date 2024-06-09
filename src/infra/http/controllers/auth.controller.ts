@@ -33,7 +33,10 @@ export class AuthController {
   @Public()
   @UsePipes(new ZodValidationPipe(createSessionBodySchema))
   async create(@Body() { cpf, password }: CreateSessionDTO) {
-    const user = await this.userRepository.findOneBy({ cpf });
+    const user = await this.userRepository.findOne({
+      where: { cpf },
+      relations: ["permissions"],
+    });
 
     if (!user) {
       throw new UnauthorizedException("User credentials do not match");
@@ -45,7 +48,10 @@ export class AuthController {
       throw new UnauthorizedException("User credentials do not match");
     }
 
-    const accessToken = this.jwt.sign({ sub: user.id });
+    const accessToken = this.jwt.sign({
+      sub: user.id,
+      permissions: user.permissions.map((permission) => permission.code),
+    });
 
     return {
       access_token: accessToken,

@@ -72,7 +72,6 @@ type ListDeliveriesByDeliveryManIdQuery = z.infer<
 >;
 
 @Controller("/deliveries")
-@Roles(Role.Admin)
 export class DeliveriesController {
   constructor(
     private createDelivery: CreateDeliveryUseCase,
@@ -82,6 +81,7 @@ export class DeliveriesController {
   ) {}
 
   @Post()
+  @Roles(Role.Admin)
   @HttpCode(201)
   @UsePipes(new ZodValidationPipe(createDeliveryBodySchema))
   async create(@Body() delivery: CreateDeliveryDto) {
@@ -102,12 +102,18 @@ export class DeliveriesController {
   }
 
   @Get("/deliveryman/:id")
+  @Roles(Role.Deliveryman, Role.Admin)
   @HttpCode(200)
   async findByDeliverymanId(
     @Param("id") id: string,
     @Query(new ZodValidationPipe(listDeliveriesByDeliveryManIdQuerySchema))
     { page, itemsPerPage }: ListDeliveriesByDeliveryManIdQuery,
+    @CurrentUser() user: UserPayload,
   ) {
+    if (Number(id) !== user.sub && !user.permissions.includes(Role.Admin)) {
+      throw new UnauthorizedException("You can only see your own deliveries");
+    }
+
     const res = await this.listDeliveriesByDeliveryManId.execute({
       deliverymanId: id,
       page,
@@ -122,6 +128,7 @@ export class DeliveriesController {
   }
 
   @Delete("/:id")
+  @Roles(Role.Admin)
   @HttpCode(204)
   async delete(@Param("id") id: string) {
     const res = await this.deleteDelivery.execute({ id });
@@ -139,6 +146,7 @@ export class DeliveriesController {
 
   // TODO - Add constraints to prevent invalid status transitions and check if the body is valid
   @Patch("/:id/change-status")
+  @Roles(Role.Admin)
   @HttpCode(200)
   async update(
     @Param("id") id: string,
