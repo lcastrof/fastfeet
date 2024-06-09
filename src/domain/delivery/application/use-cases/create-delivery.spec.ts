@@ -1,3 +1,4 @@
+import { makeRecipient } from "test/factories/make-recipient";
 import { InMemoryAttachmentRepository } from "test/repositories/in-memory-attachment-repository";
 import { InMemoryDeliveryRepository } from "test/repositories/in-memory-delivery-repository";
 import { InMemoryRecipientRepository } from "test/repositories/in-memory-recipient-repository";
@@ -22,19 +23,22 @@ describe("Create Delivery", () => {
   });
 
   it("should be able to create a delivery", async () => {
+    const recipient = makeRecipient();
     const request = {
-      id: "1",
-      recipientId: "1",
+      recipientId: recipient.id.toValue(),
       product: "Product",
     };
+
+    inMemoryRecipientRepository.recipients.push(recipient);
 
     const result = await sut.execute(request);
 
     expect(result.isRight()).toBe(true);
 
     if (result.isRight()) {
-      expect(result.value.delivery.id).toEqual(request.id);
-      expect(result.value.delivery.recipientId).toEqual(request.recipientId);
+      expect(result.value.delivery.recipientId.toValue()).toEqual(
+        request.recipientId,
+      );
       expect(result.value.delivery.product).toEqual(request.product);
     }
   });
