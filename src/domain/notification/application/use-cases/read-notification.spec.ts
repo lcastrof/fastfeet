@@ -17,7 +17,7 @@ describe("Read Notification", () => {
       recipientId: new UniqueEntityID("1"),
     });
 
-    await inMemoryNotificationRepository.create(notification);
+    await inMemoryNotificationRepository.createNotification(notification);
 
     expect(notification.isRead()).toBe(false);
 
@@ -35,7 +35,7 @@ describe("Read Notification", () => {
       recipientId: new UniqueEntityID("1"),
     });
 
-    await inMemoryNotificationRepository.create(notification);
+    await inMemoryNotificationRepository.createNotification(notification);
 
     expect(notification.isRead()).toBe(false);
 
@@ -52,7 +52,7 @@ describe("Read Notification", () => {
       recipientId: new UniqueEntityID("1"),
     });
 
-    await inMemoryNotificationRepository.create(notification);
+    await inMemoryNotificationRepository.createNotification(notification);
 
     expect(notification.isRead()).toBe(false);
 

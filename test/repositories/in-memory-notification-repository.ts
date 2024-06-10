@@ -12,11 +12,11 @@ export class InMemoryNotificationRepository implements NotificationRepository {
     );
   }
 
-  async create(notification: Notification): Promise<void> {
+  async createNotification(notification: Notification): Promise<void> {
     this.notifications.push(notification);
   }
 
-  async save(notification: Notification): Promise<void> {
+  async saveNotification(notification: Notification): Promise<void> {
     const index = this.notifications.findIndex(
       (item) => item.id.toString() === notification.id.toString(),
     );

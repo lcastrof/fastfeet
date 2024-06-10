@@ -4,13 +4,15 @@
 import { ResourceNotFoundError } from "@/core/errors/resource-not-found-error";
 import { DomainEvents } from "@/core/events/domain-events";
 import { EventHandler } from "@/core/events/event-handler";
+import { RecipientRepository } from "@/domain/delivery/application/repositories/recipient-repository";
 import { DeliveryStatusChangeEvent } from "@/domain/delivery/enterprise/events/delivery-status-change-event";
-import { InMemoryRecipientRepository } from "test/repositories/in-memory-recipient-repository";
+import { Injectable } from "@nestjs/common";
 import { SendNotificationUseCase } from "../use-cases/send-notification";
 
+@Injectable()
 export class OnStatusChange implements EventHandler {
   constructor(
-    private recipientRepository: InMemoryRecipientRepository,
+    private recipientRepository: RecipientRepository,
     private sendNotificationUseCase: SendNotificationUseCase,
   ) {
     this.setupSubscriptions();
