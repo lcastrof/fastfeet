@@ -20,6 +20,7 @@ import { MarkDeliveryStatusAsWithdrawnUseCase } from "@/domain/delivery/applicat
 import { Module } from "@nestjs/common";
 import { CryptographyModule } from "../cryptography/cryptography.module";
 import { DatabaseModule } from "../database/database.module";
+import { AttachmentsController } from "./controllers/attachments.controller";
 import { AuthController } from "./controllers/auth.controller";
 import { DeliveriesController } from "./controllers/deliveries.controller";
 import { DeliverymenController } from "./controllers/deliverymen.controller";
@@ -32,6 +33,7 @@ import { RecipientsController } from "./controllers/recipients.controller";
     RecipientsController,
     AuthController,
     DeliveriesController,
+    AttachmentsController,
   ],
   providers: [
     CreateDeliverymanUseCase,
