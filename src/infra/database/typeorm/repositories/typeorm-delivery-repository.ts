@@ -1,3 +1,4 @@
+import { DomainEvents } from "@/core/events/domain-events";
 import {
   PaginatedResponse,
   PaginationParams,
@@ -110,6 +111,8 @@ export class TypeormDeliveryRepository
     const data = TypeormDeliveryMapper.toPersistence(delivery);
 
     await this.save(data);
+
+    DomainEvents.dispatchEventsForAggregate(delivery.id);
   }
 
   async deleteDelivery(id: string): Promise<void> {

@@ -22,7 +22,9 @@ export class Notification {
   @JoinColumn({ name: "recipient_id", referencedColumnName: "id" })
   recipient: User;
 
-  @Column()
+  @Column({
+    name: "recipient_id",
+  })
   recipientId: number;
 
   @Column({
