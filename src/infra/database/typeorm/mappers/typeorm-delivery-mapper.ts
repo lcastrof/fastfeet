@@ -31,7 +31,7 @@ export class TypeormDeliveryMapper {
       data.id = Number(delivery.id.toValue());
     }
     data.attachmentId = delivery.attachmentId
-      ? Number(delivery.attachmentId.toValue())
+      ? delivery.attachmentId.toValue()
       : undefined;
     data.deliverymanId = delivery.deliverymanId
       ? Number(delivery.deliverymanId.toValue())

@@ -50,7 +50,6 @@ export class TypeormDeliverymanRepository
       where: { cpf },
       relations: ["permissions"],
     });
-    console.log(user);
 
     if (!user) {
       return null;

@@ -23,7 +23,7 @@ export class TypeormAttachmentRepository
   }
 
   async findById(id: string): Promise<Attachment | null> {
-    const attachment = await this.findOneBy({ id: Number(id) });
+    const attachment = await this.findOneBy({ id });
 
     if (!attachment) {
       return null;
@@ -44,13 +44,15 @@ export class TypeormAttachmentRepository
 
   async createAttachment(attachment: Attachment): Promise<void> {
     const data = TypeormAttachmentMapper.toPersistence(attachment);
-
-    const createdAttachment = this.create(data);
-
-    await this.save(createdAttachment);
+    await this.insert(data);
   }
 
   async deleteByDeliveryId(id: string): Promise<void> {
     await this.delete({ deliveryId: Number(id) });
+  }
+
+  async saveAttachment(attachment: Attachment): Promise<void> {
+    const data = TypeormAttachmentMapper.toPersistence(attachment);
+    await this.save(data);
   }
 }

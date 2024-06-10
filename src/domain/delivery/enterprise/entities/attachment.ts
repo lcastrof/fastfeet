@@ -2,14 +2,17 @@ import { Entity } from "@/core/entities/entity";
 import { UniqueEntityID } from "@/core/entities/value-objects/unique-entity-id";
 
 interface AttachmentProps {
-  deliveryId: UniqueEntityID;
+  deliveryId?: UniqueEntityID;
   title: string;
   link: string;
 }
 
 export class Attachment extends Entity<AttachmentProps> {
-  get deliveryId() {
+  get deliveryId(): UniqueEntityID | undefined {
     return this.props.deliveryId;
+  }
+  set deliveryId(value: UniqueEntityID) {
+    this.props.deliveryId = value;
   }
 
   get title() {

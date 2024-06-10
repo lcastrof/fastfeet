@@ -48,7 +48,7 @@ export class MarkDeliveryStatusAsDeliveredUseCase {
       return left(new ResourceNotFoundError());
     }
 
-    if (delivery.deliverymanId?.toValue() !== deliverymanId) {
+    if (delivery.deliverymanId?.toValue() !== deliverymanId.toString()) {
       return left(new UnauthorizedDeliverymanError());
     }
 
@@ -63,6 +63,10 @@ export class MarkDeliveryStatusAsDeliveredUseCase {
     delivery.deliveredAt = new Date();
 
     await this.deliveryRepository.saveDelivery(delivery);
+
+    attachment.deliveryId = new UniqueEntityID(deliveryId);
+
+    await this.attachmentRepository.saveAttachment(attachment);
 
     return right(null);
   }

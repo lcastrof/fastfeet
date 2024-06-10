@@ -17,9 +17,11 @@ import { MarkDeliveryStatusAsDeliveredUseCase } from "@/domain/delivery/applicat
 import { MarkDeliveryStatusAsReturnedUseCase } from "@/domain/delivery/application/use-cases/mark-delivery-status-as-returned";
 import { MarkDeliveryStatusAsWaitingUseCase } from "@/domain/delivery/application/use-cases/mark-delivery-status-as-waiting";
 import { MarkDeliveryStatusAsWithdrawnUseCase } from "@/domain/delivery/application/use-cases/mark-delivery-status-as-withdrawn";
+import { UploadAndCreateAttachmentUseCase } from "@/domain/delivery/application/use-cases/upload-and-create-attachment";
 import { Module } from "@nestjs/common";
 import { CryptographyModule } from "../cryptography/cryptography.module";
 import { DatabaseModule } from "../database/database.module";
+import { StorageModule } from "../storage/storage.module";
 import { AttachmentsController } from "./controllers/attachments.controller";
 import { AuthController } from "./controllers/auth.controller";
 import { DeliveriesController } from "./controllers/deliveries.controller";
@@ -27,7 +29,7 @@ import { DeliverymenController } from "./controllers/deliverymen.controller";
 import { RecipientsController } from "./controllers/recipients.controller";
 
 @Module({
-  imports: [DatabaseModule, CryptographyModule],
+  imports: [DatabaseModule, CryptographyModule, StorageModule],
   controllers: [
     DeliverymenController,
     RecipientsController,
@@ -55,6 +57,7 @@ import { RecipientsController } from "./controllers/recipients.controller";
     ChangeDeliverymanPasswordUseCase,
     ListDeliveriesNearbyDeliverymanUseCase,
     AuthenticateDeliverymanUseCase,
+    UploadAndCreateAttachmentUseCase,
   ],
 })
 export class HttpModule {}

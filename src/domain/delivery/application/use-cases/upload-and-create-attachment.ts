@@ -1,5 +1,4 @@
 import { Either, left, right } from "@/core/either";
-import { UniqueEntityID } from "@/core/entities/value-objects/unique-entity-id";
 import { Injectable } from "@nestjs/common";
 import { Attachment } from "../../enterprise/entities/attachment";
 import { AttachmentRepository } from "../repositories/attachment-repository";
@@ -7,7 +6,6 @@ import { Uploader } from "../storage/uploader";
 import { InvalidAttachmentTypeError } from "./errors/invalid-attachment-type";
 
 interface UploadAndCreateAttachmentRequest {
-  deliveryId: UniqueEntityID;
   fileName: string;
   fileType: string;
   body: Buffer;
@@ -27,7 +25,6 @@ export class UploadAndCreateAttachmentUseCase {
 
   async execute({
     body,
-    deliveryId,
     fileName,
     fileType,
   }: UploadAndCreateAttachmentRequest): Promise<UploadAndCreateAttachmentResponse> {
@@ -44,7 +41,6 @@ export class UploadAndCreateAttachmentUseCase {
     const attachment = Attachment.create({
       title: fileName,
       link: url,
-      deliveryId,
     });
 
     await this.attachmentRepository.createAttachment(attachment);

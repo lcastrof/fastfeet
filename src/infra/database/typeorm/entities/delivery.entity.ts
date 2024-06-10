@@ -43,7 +43,7 @@ export class Delivery {
   @Column({
     name: "attachment_id",
   })
-  attachmentId?: number;
+  attachmentId?: string;
 
   @OneToMany(() => User, (user) => user.id)
   @JoinColumn({

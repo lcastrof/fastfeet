@@ -202,6 +202,7 @@ export class DeliveriesController {
     // TODO - remove any
     const request = {
       deliveryId: id,
+      deliverymanId: user.sub,
       ...body,
     } as any;
     if (body.status === StatusEnum.DELIVERED) {
@@ -228,7 +229,7 @@ export class DeliveriesController {
             "A deliveryman can only mark a delivery as delivered if it is assigned to him",
           );
         default:
-          throw new InternalServerErrorException();
+          throw new InternalServerErrorException(error.message);
       }
     }
   }

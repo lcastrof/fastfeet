@@ -16,12 +16,12 @@ export class TypeormAttachmentMapper {
 
   static toPersistence(attachment: Attachment): TypeormAttachmentEntity {
     const data = new TypeormAttachmentEntity();
-    if (Number.isInteger(Number(attachment.id))) {
-      data.id = Number(attachment.id.toValue());
-    }
+    data.id = attachment.id.toValue();
     data.link = attachment.link;
     data.title = attachment.title;
-    data.deliveryId = Number(attachment.deliveryId.toValue());
+    data.deliveryId = attachment.deliveryId
+      ? Number(attachment.deliveryId.toValue())
+      : undefined;
 
     return data;
   }

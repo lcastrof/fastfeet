@@ -4,8 +4,8 @@ export class CreateAttachments1717457404962 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
             CREATE TABLE attachments (
-                id SERIAL PRIMARY KEY,
-                delivery_id INTEGER NOT NULL,
+                id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+                delivery_id INTEGER,
                 title VARCHAR(100) NOT NULL,
                 link VARCHAR(100) NOT NULL,
                 created_at TIMESTAMP DEFAULT now(),
@@ -16,7 +16,7 @@ export class CreateAttachments1717457404962 implements MigrationInterface {
 
     await queryRunner.query(`
             ALTER TABLE deliveries
-            ADD COLUMN attachment_id INTEGER,
+            ADD COLUMN attachment_id UUID,
             ADD FOREIGN KEY (attachment_id) REFERENCES attachments(id);
         `);
   }

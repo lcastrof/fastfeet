@@ -89,8 +89,6 @@ describe("Find deliveries by deliveryman", () => {
       itemsPerPage: 10,
     });
 
-    console.log(response);
-
     expect(response.isRight()).toBeTruthy();
     if (response.isRight()) {
       expect(response.value.data).toHaveLength(3);
