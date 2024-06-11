@@ -3,7 +3,7 @@ import { Delivery } from "@/domain/delivery/enterprise/entities/delivery";
 export class DeliveryPresenter {
   static toHTTP(delivery: Delivery) {
     return {
-      id: delivery.id.toValue(),
+      id: Number(delivery.id.toValue()),
       product: delivery.product,
       recipientId: delivery.recipientId.toValue(),
       deliverymanId: delivery.deliverymanId?.toValue(),

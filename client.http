@@ -37,7 +37,7 @@ Authorization: Bearer {{authToken}}
 ###
 
 # @name get_deliveryman_by_id
-GET {{baseUrl}}/deliverymen/12
+GET {{baseUrl}}/deliverymen/1
 Authorization: Bearer {{authToken}}
 
 ###
