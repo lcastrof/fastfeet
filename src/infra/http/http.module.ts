@@ -18,6 +18,7 @@ import { MarkDeliveryStatusAsReturnedUseCase } from "@/domain/delivery/applicati
 import { MarkDeliveryStatusAsWaitingUseCase } from "@/domain/delivery/application/use-cases/mark-delivery-status-as-waiting";
 import { MarkDeliveryStatusAsWithdrawnUseCase } from "@/domain/delivery/application/use-cases/mark-delivery-status-as-withdrawn";
 import { UploadAndCreateAttachmentUseCase } from "@/domain/delivery/application/use-cases/upload-and-create-attachment";
+import { ReadNotificationUseCase } from "@/domain/notification/application/use-cases/read-notification";
 import { Module } from "@nestjs/common";
 import { CryptographyModule } from "../cryptography/cryptography.module";
 import { DatabaseModule } from "../database/database.module";
@@ -26,6 +27,7 @@ import { AttachmentsController } from "./controllers/attachments.controller";
 import { AuthController } from "./controllers/auth.controller";
 import { DeliveriesController } from "./controllers/deliveries.controller";
 import { DeliverymenController } from "./controllers/deliverymen.controller";
+import { NotificationsController } from "./controllers/notifications.controller";
 import { RecipientsController } from "./controllers/recipients.controller";
 
 @Module({
@@ -36,6 +38,7 @@ import { RecipientsController } from "./controllers/recipients.controller";
     AuthController,
     DeliveriesController,
     AttachmentsController,
+    NotificationsController,
   ],
   providers: [
     CreateDeliverymanUseCase,
@@ -58,6 +61,7 @@ import { RecipientsController } from "./controllers/recipients.controller";
     ListDeliveriesNearbyDeliverymanUseCase,
     AuthenticateDeliverymanUseCase,
     UploadAndCreateAttachmentUseCase,
+    ReadNotificationUseCase,
   ],
 })
 export class HttpModule {}
