@@ -1,5 +1,5 @@
 @baseUrl = http://localhost:3333
-@authToken = {{authenticate_as_admin.response.body.access_token}}
+@authToken = {{authenticate_as_admin.response.body.accessToken}}
 
 ###
 
@@ -8,25 +8,41 @@ POST {{baseUrl}}/sessions
 Content-Type: application/json
 
 {
-  "cpf": "00000000000",
-  // TODO: change this password
-  "password": "ehOADMta?"
+  "cpf": "53335329074",
+  "password": "teste123456"
 }
 
 ###
 
 # @name create_deliveryman
-POST {{baseUrl}}/deliveryman
+POST {{baseUrl}}/deliverymen
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
   "name": "John Doe",
   "email": "john@doe.com",
-  "cpf": "45381909004",
+  "cpf": "05890506056",
   "password": "123456",
   "latitude": 0,
   "longitude": 0
+}
+
+###
+
+# @name get_deliveryman_by_id
+GET {{baseUrl}}/deliverymen/12
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name change_deliveryman_password
+PATCH {{baseUrl}}/deliverymen/12/change-password
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "password": "teste12345"
 }
 
 ###
@@ -53,7 +69,7 @@ Authorization: Bearer {{authToken}}
 ###
 
 # @name get_recipient_by_id
-GET {{baseUrl}}/recipients/1
+GET {{baseUrl}}/recipients/6
 Authorization: Bearer {{authToken}}
 
 ###
@@ -80,7 +96,7 @@ Authorization: Bearer {{authToken}}
 ###
 
 # @name delete_recipient
-DELETE {{baseUrl}}/recipients/2
+DELETE {{baseUrl}}/recipients/7
 Authorization: Bearer {{authToken}}
 
 ###
@@ -91,14 +107,20 @@ Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-  "recipientId": 6,
+  "recipientId": 1,
   "product": "Product"
 }
 
 ###
 
 # @name list_deliveries_by_deliveryman
-GET {{baseUrl}}/deliveries/deliveryman/6?page=1&itemsPerPage=10
+GET {{baseUrl}}/deliveries/deliveryman/1?page=1&itemsPerPage=10
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name list_deliveries_nearby_deliveryman
+GET {{baseUrl}}/deliveries/deliveryman/12/nearby?page=1&itemsPerPage=10
 Authorization: Bearer {{authToken}}
 
 ###
@@ -108,13 +130,6 @@ DELETE {{baseUrl}}/deliveries/2
 Authorization: Bearer {{authToken}}
 
 ###
-# export enum StatusEnum {
-#   NOT_STARTED = "NOT_STARTED",
-#   WAITING = "WAITING",
-#   WITHDRAWN = "WITHDRAWN",
-#   DELIVERED = "DELIVERED",
-#   RETURNED = "RETURNED",
-# }
 
 # @name change_delivery_status_to_waiting
 PATCH {{baseUrl}}/deliveries/3/change-status
@@ -128,25 +143,25 @@ Authorization: Bearer {{authToken}}
 ###
 
 # @name change_delivery_status_to_withdrawn
-PATCH {{baseUrl}}/deliveries/3/change-status
+PATCH {{baseUrl}}/deliveries/1/change-status
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
   "status": "WITHDRAWN",
-  "deliverymanId": 12
+  "deliverymanId": 1
 }
 
 ###
 
 # @name change_delivery_status_to_delivered
-PATCH {{baseUrl}}/deliveries/3/change-status
+PATCH {{baseUrl}}/deliveries/1/change-status
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
   "status": "DELIVERED",
-  "attachmentId": 1
+  "attachmentId": "264a653e-5a3e-4b1d-9932-9e622319bead"
 }
 
 ###
@@ -161,4 +176,25 @@ Authorization: Bearer {{authToken}}
   "status": "RETURNED"
 }
 
-// UPLOAD ATTACHMENT
+###
+
+# @name upload_attachment
+POST {{baseUrl}}/attachments
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+Authorization: Bearer {{authToken}}
+
+file
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="file"; filename="1.jpg"
+Content-Type: image/jpeg
+
+< ./1.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+###
+
+# @name read_notification
+PATCH {{baseUrl}}/notifications/1/read
+Authorization: Bearer {{authToken}}
+
+###
