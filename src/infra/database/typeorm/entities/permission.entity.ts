@@ -14,7 +14,7 @@ export class Permission {
   created_at?: Date;
 
   @Column({
-    default: new Date(),
+    name: "updated_at",
   })
-  updated_at?: Date;
+  updatedAt?: Date;
 }

@@ -1,6 +1,7 @@
 import { AttachmentRepository } from "@/domain/delivery/application/repositories/attachment-repository";
 import { DeliveryRepository } from "@/domain/delivery/application/repositories/delivery-repository";
 import { DeliverymanRepository } from "@/domain/delivery/application/repositories/deliveryman-repository";
+import { PermissionRepository } from "@/domain/delivery/application/repositories/permission-repository";
 import { RecipientRepository } from "@/domain/delivery/application/repositories/recipient-repository";
 import { NotificationRepository } from "@/domain/notification/application/repositories/notifications-repository";
 import { Module } from "@nestjs/common";
@@ -9,13 +10,14 @@ import { TypeOrmRootModuleConfig } from "./typeorm/config";
 import { Attachment } from "./typeorm/entities/attachment.entity";
 import { Delivery } from "./typeorm/entities/delivery.entity";
 import { Notification } from "./typeorm/entities/notification.entity";
-import { Permission } from "./typeorm/entities/permisison.entity";
+import { Permission } from "./typeorm/entities/permission.entity";
 import { Recipient } from "./typeorm/entities/recipient.entity";
 import { User } from "./typeorm/entities/user.entity";
 import { TypeormAttachmentRepository } from "./typeorm/repositories/typeorm-attachment-repository";
 import { TypeormDeliveryRepository } from "./typeorm/repositories/typeorm-delivery-repository";
 import { TypeormDeliverymanRepository } from "./typeorm/repositories/typeorm-deliveryman-repository";
 import { TypeormNotificationRepository } from "./typeorm/repositories/typeorm-notification-repository";
+import { TypeormPermissionRepository } from "./typeorm/repositories/typeorm-permission-repository";
 import { TypeormRecipientRepository } from "./typeorm/repositories/typeorm-recipient-repository";
 
 @Module({
@@ -49,6 +51,10 @@ import { TypeormRecipientRepository } from "./typeorm/repositories/typeorm-recip
       provide: NotificationRepository,
       useClass: TypeormNotificationRepository,
     },
+    {
+      provide: PermissionRepository,
+      useClass: TypeormPermissionRepository,
+    },
   ],
   exports: [
     DeliverymanRepository,
@@ -56,6 +62,7 @@ import { TypeormRecipientRepository } from "./typeorm/repositories/typeorm-recip
     DeliveryRepository,
     RecipientRepository,
     NotificationRepository,
+    PermissionRepository,
     TypeOrmModule,
   ],
 })

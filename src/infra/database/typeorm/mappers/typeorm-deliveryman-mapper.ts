@@ -37,6 +37,10 @@ export class TypeormDeliverymanMapper {
     user.latitude = deliveryman.latitude;
     user.longitude = deliveryman.longitude;
     user.cpf = deliveryman.cpf.value;
+    user.permissions = deliveryman.permissions.map((permission) => ({
+      id: Number(permission.id.toValue()),
+      code: permission.code,
+    }));
 
     return user;
   }

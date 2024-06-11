@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
   Unique,
 } from "typeorm";
-import { Permission } from "./permisison.entity";
+import { Permission } from "./permission.entity";
 
 @Entity("users")
 export class User {

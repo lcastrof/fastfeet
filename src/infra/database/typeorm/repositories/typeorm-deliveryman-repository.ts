@@ -3,7 +3,7 @@ import { Deliveryman } from "@/domain/delivery/enterprise/entities/deliveryman";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { Permission } from "../entities/permisison.entity";
+import { Permission } from "../entities/permission.entity";
 import { User } from "../entities/user.entity";
 import { TypeormDeliverymanMapper } from "../mappers/typeorm-deliveryman-mapper";
 
@@ -58,24 +58,10 @@ export class TypeormDeliverymanRepository
     return TypeormDeliverymanMapper.toDomain(user);
   }
 
-  // TODO - separate this method into a permission repository
   async createDeliveryman(deliveryman: Deliveryman) {
     const data = TypeormDeliverymanMapper.toPersistence(deliveryman);
 
-    const permission = await this.permissionRepository.findOne({
-      where: { code: "deliveryman" },
-    });
-
-    if (!permission) {
-      throw new Error("Permission not found");
-    }
-
-    const user = this.create({
-      ...data,
-      permissions: [permission],
-    });
-
-    await this.save(user);
+    await this.save(data);
   }
 
   async findById(id: number) {

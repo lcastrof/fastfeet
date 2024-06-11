@@ -20,13 +20,19 @@ Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-  "name": "John Doe",
-  "email": "john@doe.com",
-  "cpf": "05890506056",
+  "name": "John Doe 2",
+  "email": "john+1@doe.com",
+  "cpf": "03911804016",
   "password": "123456",
   "latitude": 0,
   "longitude": 0
 }
+
+###
+
+# @name delete_deliveryman
+DELETE {{baseUrl}}/deliverymen/3
+Authorization: Bearer {{authToken}}
 
 ###
 

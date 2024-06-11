@@ -189,7 +189,6 @@ export class DeliveriesController {
     return;
   }
 
-  // TODO - Add constraints to prevent invalid status transitions and check if the body is valid
   @Patch("/:id/change-status")
   @Roles(Role.Admin)
   @HttpCode(200)
@@ -199,7 +198,6 @@ export class DeliveriesController {
     body: ChangeDeliveryStatusDto,
     @CurrentUser() user: UserPayload,
   ) {
-    // TODO - remove any
     const request = {
       deliveryId: id,
       deliverymanId: user.sub,
